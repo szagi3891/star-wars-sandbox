@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"module": "commonjs",
+		"strict": true,
+        "lib": ["dom", "es6", "esnext"],
+        "jsx": "react",
+		"downlevelIteration": true,
+		"sourceMap": true,
+		"declaration": true,
+		"experimentalDecorators": true,
+		"noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "_baseUrl": "./src",
+		"outDir": "./dist"
+	}
+}

@@ -1,0 +1,25 @@
+{
+    "name": "Star-wars",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+      "ts-check": "yarn run tsc --noEmit -p .",
+      "ts-check:watch": "yarn run tsc --noEmit -p . --watch",
+      "start": "parcel ./src/index.html"
+    },
+    "dependencies": {
+      "@emotion/core": "^10.0.7",
+      "@emotion/styled": "^10.0.7",
+      "@types/node": "^11.11.0",
+      "@types/react": "^16.8.6",
+      "@types/react-dom": "^16.8.2",
+      "mobx": "^5.9.0",
+      "mobx-react": "^5.4.3",
+      "parcel": "^1.11.0",
+      "react": "^16.8.3",
+      "react-dom": "^16.8.3",
+      "typescript": "^3.3.3333"
+    }
+  }
+  
