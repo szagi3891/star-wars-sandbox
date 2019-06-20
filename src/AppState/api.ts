@@ -37,6 +37,7 @@ export const getFilms = async (): Promise<Array<string>> => {
 
 export interface FilmItemType {
     title: string,
+    created: string,
 }
 
 export const getFilmItem = async (urlId: string): Promise<FilmItemType> => {

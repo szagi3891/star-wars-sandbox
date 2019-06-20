@@ -1,13 +1,17 @@
 import * as React from 'react';
-import { observable } from 'mobx';
-import { getFilms } from './api';
+import { observable, action } from 'mobx';
 import { Models } from './Models';
 
 type CurrentViewMain = {
     type: 'main'
 };
 
-type CurrentView = CurrentViewMain;
+type CurrentViewFilm = {
+    type: 'film',
+    filmUrl: string
+};
+
+type CurrentView = CurrentViewMain | CurrentViewFilm;
 
 export class AppState {
 
@@ -19,6 +23,19 @@ export class AppState {
 
     static createForContext(): AppState {
         return new AppState();
+    }
+
+    @action redirectToMain = () => {
+        this.currentView = {
+            type: 'main'
+        };
+    }
+
+    @action redirectToFilm = (filmUrl: string) => {
+        this.currentView = {
+            type: 'film',
+            filmUrl
+        };
     }
 }
 
@@ -35,14 +52,3 @@ export class AppStateComponent<PropsType = {}, StateType = {}> extends React.Com
         return this.context;
     }
 }
-
-const run = async () => {
-    const fils = await getFilms();
-}
-
-run().then(() => {
-    console.info('end');
-}).catch((err) => {
-    console.error(err);
-});
-

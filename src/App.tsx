@@ -18,10 +18,14 @@ class FilmLabel extends AppStateComponent<FilmLabelPropsType> {
         }
     
         return (
-            <div>
+            <div onClick={this.onClick}>
                 film label: {filmItem.value.title}
             </div>
         );
+    }
+
+    onClick = () => {
+        this.appState.redirectToFilm(this.props.filmUrl);
     }
 }
 
@@ -34,7 +38,11 @@ export class App extends AppStateComponent {
             return this.renderMain();
         }
 
-        return assertNever('App -> render', currentView.type);
+        if (currentView.type === 'film') {
+            return this.renderFilm(currentView.filmUrl);
+        }
+
+        return assertNever('App -> render', currentView);
     }
 
     renderMain() {
@@ -46,8 +54,29 @@ export class App extends AppStateComponent {
 
         return (
             <div>
+                <h1>Lista filmów:</h1>
                 { films.value.map((urlId) => <FilmLabel key={urlId} filmUrl={urlId} />) }
             </div>
         );
+    }
+
+    renderFilm(filmUrl: string) {
+        const filmItem = this.appState.models.filmItem.get(filmUrl).get();
+
+        if (filmItem.type === 'loading') {
+            return 'loading';
+        }
+
+        return (
+            <div>
+                <div>detale filmu {filmUrl}</div>
+                <div>created: {filmItem.value.created}</div>
+                <div onClick={this.redirectToMain}>redirect to main</div>
+            </div>
+        );
+    }
+
+    redirectToMain = () => {
+        this.appState.redirectToMain();
     }
 }
