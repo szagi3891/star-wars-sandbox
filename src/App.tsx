@@ -2,32 +2,10 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { AppStateComponent } from './AppState/AppState';
 import { assertNever } from './assertNever';
-
-interface FilmLabelPropsType {
-    filmUrl: string,
-}
-
-@observer
-class FilmLabel extends AppStateComponent<FilmLabelPropsType> {
-    render() {
-        const { filmUrl } = this.props;
-        const filmItem = this.appState.models.filmItem.get(filmUrl).get();
-
-        if (filmItem.type === 'loading') {
-            return 'loading';
-        }
-    
-        return (
-            <div onClick={this.onClick}>
-                film label: {filmItem.value.title}
-            </div>
-        );
-    }
-
-    onClick = () => {
-        this.appState.redirectToFilm(this.props.filmUrl);
-    }
-}
+import { FilmDetails } from './View/FilmDetails';
+import { Loading } from './View/Common';
+import { Character } from './View/Character';
+import { FilmList } from './View/FilmList';
 
 @observer
 export class App extends AppStateComponent {
@@ -35,48 +13,62 @@ export class App extends AppStateComponent {
         const currentView = this.appState.currentView;
 
         if (currentView.type === 'main') {
-            return this.renderMain();
+            return (
+                <>
+                    <h1>Lista filmów:</h1>
+                    { this.renderMain() }
+                </>
+            )
         }
 
         if (currentView.type === 'film') {
-            return this.renderFilm(currentView.filmUrl);
+            return (
+                <>
+                    <h1>Film:</h1>
+                    { this.renderFilm(currentView.filmUrl) }
+                </>
+            );
+        }
+
+        if (currentView.type === 'character') {
+            return (
+                <>
+                    <h1>Character:</h1>
+                    { this.renderCharacter(currentView.filmUrl) }
+                </>
+            );
         }
 
         return assertNever('App -> render', currentView);
     }
 
     renderMain() {
-        const films = this.appState.models.films.get();
+        const films = this.appState.models.getFilms();
 
         if (films.type === 'loading') {
-            return 'loading';
+            return <Loading/>;
         }
 
-        return (
-            <div>
-                <h1>Lista filmów:</h1>
-                { films.value.map((urlId) => <FilmLabel key={urlId} filmUrl={urlId} />) }
-            </div>
-        );
+        return <FilmList films={films.value} />;
     }
 
     renderFilm(filmUrl: string) {
-        const filmItem = this.appState.models.filmItem.get(filmUrl).get();
+        const filmItem = this.appState.models.getFilm(filmUrl);
 
         if (filmItem.type === 'loading') {
-            return 'loading';
+            return <Loading/>;
         }
 
-        return (
-            <div>
-                <div>detale filmu {filmUrl}</div>
-                <div>created: {filmItem.value.created}</div>
-                <div onClick={this.redirectToMain}>redirect to main</div>
-            </div>
-        );
+        return <FilmDetails film={filmItem.value}/>;
     }
 
-    redirectToMain = () => {
-        this.appState.redirectToMain();
+    renderCharacter(characterUrl: string) {
+        const characterResult = this.appState.models.getCharacter(characterUrl);
+
+        if (characterResult.type === 'loading') {
+            return <Loading/>;
+        }
+
+        return <Character character={characterResult.value}/>;
     }
 }

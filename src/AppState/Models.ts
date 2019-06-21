@@ -1,5 +1,5 @@
 import { observable } from "mobx";
-import { getFilms, FilmItemType, getFilmItem } from "./api";
+import { getFilms, FilmModel, CharacterModel, getFilmModel, getCharacterModel } from "./api";
 
 type ResultLoading = {
     type: 'loading'
@@ -62,12 +62,30 @@ class MobxAutoNew<K, V> {
 
 export class Models {
 
-    readonly films: Resource<Array<string>> = new Resource(getFilms);
-    readonly filmItem: MobxAutoNew<string, Resource<FilmItemType>> = new MobxAutoNew(
+    private readonly films: Resource<Array<string>> = new Resource(getFilms);
+    private readonly filmModel: MobxAutoNew<string, Resource<FilmModel>> = new MobxAutoNew(
         (filmUrl: string) => new Resource(
-            () => getFilmItem(filmUrl)
+            () => getFilmModel(filmUrl)
         )
     );
+
+    private readonly characterModel: MobxAutoNew<string, Resource<CharacterModel>> = new MobxAutoNew(
+        (filmUrl: string) => new Resource(
+            () => getCharacterModel(filmUrl)
+        )
+    );
+
+    getFilms(): Result<Array<string>> {
+        return this.films.get();
+    }
+
+    getFilm(id: string): Result<FilmModel> {
+        return this.filmModel.get(id).get();
+    }
+
+    getCharacter(id: string): Result<CharacterModel> {
+        return this.characterModel.get(id).get();
+    }
 }
 
 

@@ -11,7 +11,12 @@ type CurrentViewFilm = {
     filmUrl: string
 };
 
-type CurrentView = CurrentViewMain | CurrentViewFilm;
+type CurrentViewCharacter = {
+    type: 'character',
+    filmUrl: string
+};
+
+type CurrentView = CurrentViewMain | CurrentViewFilm | CurrentViewCharacter;
 
 export class AppState {
 
@@ -34,6 +39,13 @@ export class AppState {
     @action redirectToFilm = (filmUrl: string) => {
         this.currentView = {
             type: 'film',
+            filmUrl
+        };
+    }
+
+    @action redirectToCharacter = (filmUrl: string) => {
+        this.currentView = {
+            type: 'character',
             filmUrl
         };
     }

@@ -35,11 +35,17 @@ export const getFilms = async (): Promise<Array<string>> => {
     return await getList('https://swapi.co/api/films?format=json');
 }
 
-export interface FilmItemType {
+export interface FilmModel {
     title: string,
     created: string,
+    characters: Array<string>,
 }
 
-export const getFilmItem = async (urlId: string): Promise<FilmItemType> => {
-    return await getListJson<FilmItemType>(urlId);
-};
+export const getFilmModel = async (urlId: string) => getListJson<FilmModel>(urlId);
+
+export interface CharacterModel {
+    name: string,
+    films: Array<string>,
+}
+
+export const getCharacterModel = async (urlId: string) => getListJson<CharacterModel>(urlId);
