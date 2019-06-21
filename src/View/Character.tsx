@@ -30,7 +30,7 @@ export class Character extends AppStateComponent<PropsType> {
     }
 
     redirectToMain = () => {
-        this.appState.redirectToMain();
+        this.appState.currentView.redirectToMain();
     }
 }
 

@@ -25,6 +25,6 @@ export class FilmLabel extends AppStateComponent<PropsType> {
     }
 
     onClick = () => {
-        this.appState.redirectToFilm(this.props.filmUrl);
+        this.appState.currentView.redirectToFilm(this.props.filmUrl);
     }
 }

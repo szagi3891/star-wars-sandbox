@@ -35,7 +35,7 @@ export class FilmDetails extends AppStateComponent<PropsType> {
     }
 
     redirectToMain = () => {
-        this.appState.redirectToMain();
+        this.appState.currentView.redirectToMain();
     }
 
     renderCharacters() {

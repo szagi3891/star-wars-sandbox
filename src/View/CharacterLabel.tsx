@@ -28,6 +28,6 @@ export class CharacterLabel extends AppStateComponent<PropsType> {
     }
 
     onClick = () => {
-        this.appState.redirectToCharacter(this.props.characterUrl);
+        this.appState.currentView.redirectToCharacter(this.props.characterUrl);
     }
 }

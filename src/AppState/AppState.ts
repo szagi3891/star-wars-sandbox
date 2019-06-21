@@ -1,53 +1,14 @@
 import * as React from 'react';
-import { observable, action } from 'mobx';
 import { Models } from './Models';
-
-type CurrentViewMain = {
-    type: 'main'
-};
-
-type CurrentViewFilm = {
-    type: 'film',
-    filmUrl: string
-};
-
-type CurrentViewCharacter = {
-    type: 'character',
-    filmUrl: string
-};
-
-type CurrentView = CurrentViewMain | CurrentViewFilm | CurrentViewCharacter;
+import { CurrentViewState } from './CurrentViewState';
 
 export class AppState {
 
+    readonly currentView: CurrentViewState = new CurrentViewState();
     readonly models: Models = new Models();
-
-    @observable currentView: CurrentView = {
-        type: 'main'
-    };
 
     static createForContext(): AppState {
         return new AppState();
-    }
-
-    @action redirectToMain = () => {
-        this.currentView = {
-            type: 'main'
-        };
-    }
-
-    @action redirectToFilm = (filmUrl: string) => {
-        this.currentView = {
-            type: 'film',
-            filmUrl
-        };
-    }
-
-    @action redirectToCharacter = (filmUrl: string) => {
-        this.currentView = {
-            type: 'character',
-            filmUrl
-        };
     }
 }
 

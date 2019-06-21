@@ -10,7 +10,7 @@ import { FilmList } from './View/FilmList';
 @observer
 export class App extends AppStateComponent {
     render() {
-        const currentView = this.appState.currentView;
+        const currentView = this.appState.currentView.currentView;
 
         if (currentView.type === 'main') {
             return (
