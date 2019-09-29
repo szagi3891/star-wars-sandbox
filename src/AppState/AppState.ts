@@ -4,17 +4,23 @@ import { CurrentViewState } from './CurrentViewState';
 
 export class AppState {
 
-    readonly currentView: CurrentViewState = new CurrentViewState();
+    readonly currentView: CurrentViewState;
     readonly models: Models = new Models();
 
+    constructor(currentView: CurrentViewState) {
+        this.currentView = currentView;
+        this.models = new Models();
+    }
+
     static createForContext(): AppState {
-        return new AppState();
+        return new AppState(
+            CurrentViewState.createForContext()
+        );
     }
 }
 
 const AppContext = React.createContext(AppState.createForContext());
 
-export const Consumer = AppContext.Consumer;
 export const Provider = AppContext.Provider;
 
 export class AppStateComponent<PropsType = {}, StateType = {}> extends React.Component<PropsType, StateType> {

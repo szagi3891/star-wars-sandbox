@@ -34,7 +34,7 @@ export class App extends AppStateComponent {
             return (
                 <>
                     <h1>Character:</h1>
-                    { this.renderCharacter(currentView.filmUrl) }
+                    { this.renderCharacter(currentView.character) }
                 </>
             );
         }
