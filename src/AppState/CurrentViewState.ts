@@ -1,28 +1,125 @@
 import { observable, action, computed } from 'mobx';
 
+const urlToUrlParams = (url: string): Array<string> => url.split('/').filter((chunk) => chunk.trim() !== '');
+
+const tryMatch = <T>(urlChunks: Array<string>, tryList: Array<(urlChunks: Array<string>) => T | null>): T | null => {
+    for (const tryItem of tryList) {
+        const match = tryItem(urlChunks);
+
+        if (match !== null) {
+            return match;
+        }
+    }
+
+    return null;
+}
+
+const getFromUrlChunks1 = <T>(
+    urlChunks: Array<string>,
+    fnMatch: (param1: string, rest: Array<string>) => T | null
+): T | null => {
+    if (urlChunks.length >= 1) {
+        return fnMatch(urlChunks[0], urlChunks.slice(1));
+    }
+
+    return null;
+}
+
+const getFromUrlChunks2 = <T>(
+    urlChunks: Array<string>,
+    fnMatch: (param1: string, param2: string, rest: Array<string>) => T | null
+): T | null => {
+    if (urlChunks.length >= 2) {
+        return fnMatch(urlChunks[0], urlChunks[1], urlChunks.slice(2));
+    }
+
+    return null;
+}
+
+
 export class CurrentViewMain {
-    readonly type: 'ClassCurrentViewMain' = 'ClassCurrentViewMain';
+    //@ts-ignore
+    private type: 'ClassCurrentViewMain' = 'ClassCurrentViewMain';
+
+    toUrlChunks(): Array<string> {
+        return [];
+    }
+
+    static tryMatch(_urlChunks: Array<string>): CurrentViewMain | null {
+        return new CurrentViewMain();
+    }
 };
 
 export class CurrentViewIntro {
-    readonly type: 'ClassCurrentViewIntro' = 'ClassCurrentViewIntro';
+    //@ts-ignore
+    private readonly type: 'ClassCurrentViewIntro' = 'ClassCurrentViewIntro';
+
+    toUrlChunks(): Array<string> {
+        return ['intro'];
+    }
+
+    static tryMatch(urlChunks: Array<string>): CurrentViewIntro | null {
+        return getFromUrlChunks1(urlChunks, (param1: string, _rest: Array<string>) => {
+            if (param1 === 'intro') {
+                return new CurrentViewIntro();
+            }
+
+            return null;
+        });
+    }
 }
 
 export class CurrentViewFilm {
-    readonly type: 'ClassCurrentViewFilm' = 'ClassCurrentViewFilm';
+    //@ts-ignore
+    private readonly type: 'ClassCurrentViewFilm' = 'ClassCurrentViewFilm';
     readonly filmUrl: string;
 
     constructor(filmUrl: string) {
         this.filmUrl = filmUrl;
     }
+
+    toUrlChunks(): Array<string> {
+        return [
+            'film',
+            btoa(this.filmUrl)
+        ];
+    }
+
+    static tryMatch(urlChunks: Array<string>): CurrentViewFilm | null {
+        return getFromUrlChunks2(urlChunks, (param1: string, param2: string, _rest: Array<string>) => {
+            if (param1 === 'film') {
+                return new CurrentViewFilm(atob(param2));
+            }
+
+            return null;
+        });
+    }
 };
 
 export class CurrentViewCharacter {
-    readonly type: 'ClassCurrentViewCharacter' = 'ClassCurrentViewCharacter';
+    //@ts-ignore
+    private readonly type: 'ClassCurrentViewCharacter' = 'ClassCurrentViewCharacter';
     readonly character: string;
 
     constructor(character: string) {
         this.character = character;
+    }
+
+    toUrlChunks(): Array<string> {
+        return [
+            'profil',
+            btoa(this.character)
+        ];
+    }
+
+    static tryMatch(urlChunks: Array<string>): CurrentViewCharacter | null {
+        return getFromUrlChunks2(urlChunks, (param1: string, param2: string, _rest: Array<string>) => {
+            if (param1 === 'profil') {
+                return new CurrentViewCharacter(atob(param2));
+            }
+
+            return null;
+        });
     }
 };
 
@@ -57,7 +154,27 @@ export class CurrentViewState {
     }
 
     @computed get windowLocation(): string {
-        return currentViewToString(this.currentView);
+        return `/${this.currentView.toUrlChunks().join('/')}`;
+    }
+
+    static match(url: string): CurrentView {
+        const chunks = urlToUrlParams(url);
+
+        const result = tryMatch<CurrentView | null>(
+            chunks,
+            [
+                CurrentViewCharacter.tryMatch,
+                CurrentViewFilm.tryMatch,
+                CurrentViewIntro.tryMatch,
+                CurrentViewMain.tryMatch
+            ]
+        );
+
+        if (result !== null) {
+            return result;
+        }
+
+        return new CurrentViewMain();
     }
 
     static createForContext(): CurrentViewState {
@@ -67,32 +184,29 @@ export class CurrentViewState {
     }
 }
 
-export const currentViewToString = (currentView: CurrentView) => {
-    if (currentView instanceof CurrentViewFilm) {
-        return `/film/${btoa(currentView.filmUrl)}`;
-    }
 
-    if (currentView instanceof CurrentViewCharacter) {
-        return `/profil/${btoa(currentView.character)}`;
-    }
 
-    return '/';
+
+
+/*
+export class CurrentViewMain1 {
+    //@ts-ignore
+    private readonly nominalType: void = undefined;
 };
 
-export const stringToCurrentView = (url: string): CurrentView => {
-    const chunks = url.split('/').filter((chunk) => chunk.trim() !== '');
-
-    if (chunks.length === 2) {
-        const [main, param] = chunks;
-
-        if (main === 'film') {
-            return new CurrentViewFilm(atob(param));
-        }
-
-        if (main === 'profil') {
-            return new CurrentViewFilm(atob(param));
-        }
-    }
-
-    return new CurrentViewMain();
+export class CurrentViewMain2 {
+    //@ts-ignore
+    private readonly nominalType: void = undefined;
 };
+
+console.info('CurrentViewMain1', CurrentViewMain1);
+console.info('CurrentViewMain2', CurrentViewMain2);
+console.info(CurrentViewMain1 === CurrentViewMain2);
+
+const ob1 = new CurrentViewMain1();
+
+console.info('check1', ob1 instanceof CurrentViewMain1);
+console.info('check2', ob1 instanceof CurrentViewMain2);
+
+const aa: CurrentViewMain1 = new CurrentViewMain2();
+*/

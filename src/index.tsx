@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { App } from './App';
 import { Provider, AppState } from './AppState/AppState';
-import { stringToCurrentView, CurrentViewState } from './AppState/CurrentViewState';
+import { CurrentViewState } from './AppState/CurrentViewState';
 import { autorun } from 'mobx';
 
-const currentView = stringToCurrentView(window.location.pathname);
+const currentView = CurrentViewState.match(window.location.pathname);
 const router = new CurrentViewState(currentView);
 const appState = new AppState(router);
 
@@ -24,7 +24,7 @@ autorun(() => {
 window.onpopstate = function(event: any) {
     console.info('on pop state', event.state);
 
-    const currentView = stringToCurrentView(window.location.pathname);
+    const currentView = CurrentViewState.match(window.location.pathname);
     router.setCurrentView(currentView);
 };
 
