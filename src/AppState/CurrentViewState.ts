@@ -1,34 +1,32 @@
 import { observable, action, computed } from 'mobx';
 
-type CurrentViewMain = {
-    type: 'main'
+export class CurrentViewMain {
+    readonly type: 'ClassCurrentViewMain' = 'ClassCurrentViewMain';
 };
 
-type CurrentViewFilm = {
-    type: 'film',
-    filmUrl: string
+export class CurrentViewIntro {
+    readonly type: 'ClassCurrentViewIntro' = 'ClassCurrentViewIntro';
+}
+
+export class CurrentViewFilm {
+    readonly type: 'ClassCurrentViewFilm' = 'ClassCurrentViewFilm';
+    readonly filmUrl: string;
+
+    constructor(filmUrl: string) {
+        this.filmUrl = filmUrl;
+    }
 };
 
-type CurrentViewCharacter = {
-    type: 'character',
-    character: string
+export class CurrentViewCharacter {
+    readonly type: 'ClassCurrentViewCharacter' = 'ClassCurrentViewCharacter';
+    readonly character: string;
+
+    constructor(character: string) {
+        this.character = character;
+    }
 };
 
-export type CurrentView = CurrentViewMain | CurrentViewFilm | CurrentViewCharacter;
-
-const buildMainState = (): CurrentViewMain => ({
-    type: 'main'
-});
-
-const buildFilmState = (filmUrl: string): CurrentViewFilm => ({
-    type: 'film',
-    filmUrl
-});
-
-const buildCharacterState = (character: string): CurrentViewCharacter => ({
-    type: 'character',
-    character
-});
+export type CurrentView = CurrentViewMain | CurrentViewIntro | CurrentViewFilm | CurrentViewCharacter;
 
 export class CurrentViewState {
 
@@ -39,20 +37,19 @@ export class CurrentViewState {
     }
 
     @action redirectToMain = () => {
-        this.currentView = {
-            type: 'main'
-        };
+        this.currentView = new CurrentViewMain();
+    }
+
+    @action redirectToIntro = () => {
+        this.currentView = new CurrentViewIntro();
     }
 
     @action redirectToFilm = (filmUrl: string) => {
-        this.currentView = buildFilmState(filmUrl);
+        this.currentView = new CurrentViewFilm(filmUrl);
     }
 
     @action redirectToCharacter = (character: string) => {
-        this.currentView = {
-            type: 'character',
-            character
-        };
+        this.currentView = new CurrentViewCharacter(character);
     }
 
     @action setCurrentView(currentView: CurrentView) {
@@ -65,17 +62,17 @@ export class CurrentViewState {
 
     static createForContext(): CurrentViewState {
         return new CurrentViewState(
-            buildMainState()
+            new CurrentViewMain()
         );
     }
 }
 
 export const currentViewToString = (currentView: CurrentView) => {
-    if (currentView.type === 'film') {
+    if (currentView instanceof CurrentViewFilm) {
         return `/film/${btoa(currentView.filmUrl)}`;
     }
 
-    if (currentView.type === 'character') {
+    if (currentView instanceof CurrentViewCharacter) {
         return `/profil/${btoa(currentView.character)}`;
     }
 
@@ -89,13 +86,13 @@ export const stringToCurrentView = (url: string): CurrentView => {
         const [main, param] = chunks;
 
         if (main === 'film') {
-            return buildFilmState(atob(param));
+            return new CurrentViewFilm(atob(param));
         }
 
         if (main === 'profil') {
-            return buildCharacterState(atob(param));
+            return new CurrentViewFilm(atob(param));
         }
     }
 
-    return buildMainState();
+    return new CurrentViewMain();
 };

@@ -16,12 +16,14 @@ autorun(() => {
         console.info(`Url ignore ${newUrl}`);
     } else {
         console.info('Url set', newUrl);
-        //@ts-ignore
-        window.history.pushState(null, null, newUrl);
+        //@ ts-ignore
+        window.history.pushState({a: 'Skojarzone dane'}, 'Title', newUrl);
     }
 });
 
-window.onpopstate = function() {
+window.onpopstate = function(event: any) {
+    console.info('on pop state', event.state);
+
     const currentView = stringToCurrentView(window.location.pathname);
     router.setCurrentView(currentView);
 };

@@ -6,13 +6,14 @@ import { FilmDetails } from './View/FilmDetails';
 import { Loading } from './View/Common';
 import { Character } from './View/Character';
 import { FilmList } from './View/FilmList';
+import { CurrentViewMain, CurrentViewFilm, CurrentViewCharacter, CurrentViewIntro } from './AppState/CurrentViewState';
 
 @observer
 export class App extends AppStateComponent {
     render() {
         const currentView = this.appState.currentView.currentView;
 
-        if (currentView.type === 'main') {
+        if (currentView instanceof CurrentViewMain) {
             return (
                 <>
                     <h1>Lista filmów:</h1>
@@ -21,7 +22,16 @@ export class App extends AppStateComponent {
             )
         }
 
-        if (currentView.type === 'film') {
+        if (currentView instanceof CurrentViewIntro) {
+            return (
+                <>
+                    intro<br/>
+                    <span onClick={this.appState.currentView.redirectToMain}>Back to main</span>
+                </>
+            );
+        }
+
+        if (currentView instanceof CurrentViewFilm) {
             return (
                 <>
                     <h1>Film:</h1>
@@ -30,7 +40,7 @@ export class App extends AppStateComponent {
             );
         }
 
-        if (currentView.type === 'character') {
+        if (currentView instanceof CurrentViewCharacter) {
             return (
                 <>
                     <h1>Character:</h1>
@@ -49,7 +59,12 @@ export class App extends AppStateComponent {
             return <Loading/>;
         }
 
-        return <FilmList films={films.value} />;
+        return (
+            <>
+                <span onClick={this.appState.currentView.redirectToIntro}>Intro</span>
+                <FilmList films={films.value} />
+            </>
+        );
     }
 
     renderFilm(filmUrl: string) {
