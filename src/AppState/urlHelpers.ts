@@ -37,3 +37,22 @@ export const getFromUrlParams2 = <T>(
     return null;
 }
 
+export const matchUrlParam = <T>(urlParams: Array<string>, pattern: string, fnMatch: (rest: Array<string>) => T | null): T | null => {
+    if (urlParams.length >= 1) {
+        if (urlParams[0] === pattern) {
+            return fnMatch(urlParams.slice(1));
+        }
+    }
+
+    return null;
+};
+
+export const matchUrlParam1 = <T>(urlParams: Array<string>, pattern: string, fnMatch: (param1: string, rest: Array<string>) => T | null): T | null => {
+    if (urlParams.length >= 2) {
+        if (urlParams[0] === pattern) {
+            return fnMatch(urlParams[1], urlParams.slice(2));
+        }
+    }
+
+    return null;
+};

@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx';
-import { getFromUrlParams1, getFromUrlParams2, urlToUrlParams, tryMatch } from './urlHelpers';
+import { urlToUrlParams, tryMatch, matchUrlParam, matchUrlParam1 } from './urlHelpers';
 
 export class CurrentViewMain {
     //@ts-ignore
@@ -23,13 +23,7 @@ export class CurrentViewIntro {
     }
 
     static tryMatch(urlParams: Array<string>): CurrentViewIntro | null {
-        return getFromUrlParams1(urlParams, (param1: string, _rest: Array<string>) => {
-            if (param1 === 'intro') {
-                return new CurrentViewIntro();
-            }
-
-            return null;
-        });
+        return matchUrlParam(urlParams, 'intro', () => new CurrentViewIntro());
     }
 }
 
@@ -43,20 +37,11 @@ export class CurrentViewFilm {
     }
 
     toUrlParams(): Array<string> {
-        return [
-            'film',
-            btoa(this.filmUrl)
-        ];
+        return ['film', btoa(this.filmUrl)];
     }
 
     static tryMatch(urlParams: Array<string>): CurrentViewFilm | null {
-        return getFromUrlParams2(urlParams, (param1: string, param2: string, _rest: Array<string>) => {
-            if (param1 === 'film') {
-                return new CurrentViewFilm(atob(param2));
-            }
-
-            return null;
-        });
+        return matchUrlParam1(urlParams, 'film', (param1: string) => new CurrentViewFilm(atob(param1)));
     }
 };
 
@@ -70,20 +55,11 @@ export class CurrentViewCharacter {
     }
 
     toUrlParams(): Array<string> {
-        return [
-            'profil',
-            btoa(this.character)
-        ];
+        return ['profil', btoa(this.character)];
     }
 
     static tryMatch(urlParams: Array<string>): CurrentViewCharacter | null {
-        return getFromUrlParams2(urlParams, (param1: string, param2: string, _rest: Array<string>) => {
-            if (param1 === 'profil') {
-                return new CurrentViewCharacter(atob(param2));
-            }
-
-            return null;
-        });
+        return matchUrlParam1(urlParams, 'profil', (param1: string) => new CurrentViewCharacter(atob(param1)));
     }
 };
 
