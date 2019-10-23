@@ -4,8 +4,8 @@ import { App } from './App';
 import { Provider, AppState } from './AppState/AppState';
 import { CurrentViewState } from './AppState/CurrentViewState';
 import { autorun } from 'mobx';
-import * as t from 'io-ts';
-import { buildValidator } from './buildValidator';
+//import * as t from 'io-ts';
+//import { buildValidator } from './buildValidator';
 import { LocalStorageItemState } from './AppState/LocalStorageItemState';
 
 const item = LocalStorageItemState.from(
@@ -13,10 +13,11 @@ const item = LocalStorageItemState.from(
 );
 
 autorun(() => {
-    localStorage.setItem('jakis_klucz', item.toLocalStorage())
+    localStorage.setItem('jakis_klucz', item.toLocalStorage());
 });
 
 
+/*
 const VIO = t.interface({
     a: t.interface({
         b: t.number
@@ -34,6 +35,7 @@ const result = decode({
 if (result instanceof Error) {
     console.error(result);
 }
+*/
 
 /*
 const result2 = decode({
@@ -42,11 +44,13 @@ const result2 = decode({
     }
 });
 */
+/*
 const result2 = decode(null);
 
 if (result2 instanceof Error) {
     console.error(result2);
 }
+*/
 
 const currentView = CurrentViewState.match(window.location.pathname);
 const router = new CurrentViewState(currentView);

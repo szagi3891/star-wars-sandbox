@@ -1,11 +1,11 @@
-import { computed } from "mobx";
+//import { computed } from "mobx";
 
 export class LocalStorageItemState {
-    @computed toLocalStorage(): string {
+    toLocalStorage(): string {
         return ''; 
     }
 
-    static from(data: string | null | undefined): LocalStorageItemState {
+    static from(_data: string | null | undefined): LocalStorageItemState {
         return new LocalStorageItemState();
     }
 }

@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
 import { Context, ValidationError } from 'io-ts';
-import { fold } from 'fp-ts/lib/Either';
+import { fold, isLeft } from 'fp-ts/lib/Either';
 
 const getContextPath = (context: Context): string => context.map(({ key }, index) => {
     if (index === 0 && key === '') {
@@ -38,7 +38,7 @@ export const buildValidator = <A>(label: string, decoder: t.Type<A>, dumpDataWhe
         const decodeResult = decoder.decode(dataIn);
 
         //When error
-        if (decodeResult._tag === 'Left') {
+        if (isLeft(decodeResult)) {
             const errorDecodeInfo = fold(failure, success)(decodeResult);
 
             if (dumpDataWhenError) {
