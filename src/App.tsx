@@ -1,6 +1,6 @@
 import * as React from 'react';
 //import { observer } from 'mobx-react';
-import { observer, useLocalStore/*, useObserver*/ } from 'mobx-react-lite';
+import { observer, /* useLocalStore, useObserver*/ } from 'mobx-react-lite';
 import { /*AppStateComponent,*/ useAppStateContext } from './AppState/AppState';
 import { assertNever } from './assertNever';
 import { FilmDetails } from './View/FilmDetails';
@@ -8,19 +8,31 @@ import { Loading } from './View/Common';
 import { Character } from './View/Character';
 import { FilmList } from './View/FilmList';
 import { CurrentViewMain, CurrentViewFilm, CurrentViewCharacter, CurrentViewIntro } from './AppState/CurrentViewState';
-//import { observable } from 'mobx';
+import { observable } from 'mobx';
 
 //observerLite(
 
-/*
+
 class Store {
     @observable value1: number = 0;
     @observable value2: number = 0;
     @observable value3: number = 0;
+    
+    public inc1() {
+        this.value1++;
+    }
+
+    public inc2() {
+        this.value2++;
+    }
+
+    public inc3() {
+        this.value3++;
+    }
 }
 
-const store = new Store();
-*/
+//const store = new Store();
+
 
 /*
 interface StateType {
@@ -30,8 +42,8 @@ interface StateType {
 }
 */
 
-const Intro = observer(() => {
-    const state = useLocalStore(() => ({
+/*
+({
         value1: 0,
         value2: 0,
         value3: 0,
@@ -45,6 +57,11 @@ const Intro = observer(() => {
             this.value3++;
         }
     }));
+*/
+
+const Intro = observer(() => {
+    //const state = useLocalStore(() => new Store())
+    const state = React.useMemo(() => new Store(), []);
 
     //state.val3 = 3;
 
