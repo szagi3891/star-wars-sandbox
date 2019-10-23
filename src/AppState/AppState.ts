@@ -31,3 +31,7 @@ export class AppStateComponent<PropsType = {}, StateType = {}> extends React.Com
         return this.context;
     }
 }
+
+export const useAppStateContext = (): AppState => {
+    return React.useContext(AppContext);
+};
