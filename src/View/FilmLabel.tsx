@@ -1,30 +1,29 @@
 import * as React from 'react';
-import { AppStateComponent } from '../AppState/AppState';
-import { observer } from 'mobx-react';
 import { Loading, Link } from './Common';
+import { observer } from 'mobx-react-lite';
+import { useAppStateContext } from '../AppState/AppState';
 
 interface PropsType {
     filmUrl: string,
 }
 
-@observer
-export class FilmLabel extends AppStateComponent<PropsType> {
-    render() {
-        const { filmUrl } = this.props;
-        const filmItem = this.appState.models.getFilm(filmUrl);
+export const FilmLabel = observer((props: PropsType) => {
+    const appState = useAppStateContext();
 
-        if (filmItem.type === 'loading') {
-            return <Loading />;
-        }
-    
-        return (
-            <Link onClick={this.onClick}>
-                {filmItem.value.title}
-            </Link>
-        );
+    const onClick = () => {
+        appState.currentView.redirectToFilm(props.filmUrl);
     }
 
-    onClick = () => {
-        this.appState.currentView.redirectToFilm(this.props.filmUrl);
+    const { filmUrl } = props;
+    const filmItem = appState.models.getFilm(filmUrl);
+
+    if (filmItem.type === 'loading') {
+        return <Loading />;
     }
-}
+
+    return (
+        <Link onClick={onClick}>
+            {filmItem.value.title}
+        </Link>
+    );
+});

@@ -1,36 +1,39 @@
 import * as React from 'react';
-import { AppStateComponent } from '../AppState/AppState';
 import { CharacterModel } from '../AppState/api';
 import { Link, Group } from './Common';
 import { FilmList } from './FilmList';
+import { observer } from 'mobx-react-lite';
+import { useAppStateContext } from '../AppState/AppState';
 
 interface PropsType {
     character: CharacterModel,
 }
-export class Character extends AppStateComponent<PropsType> {
-    render() {
-        const { character } = this.props;
 
-        return (
-            <div>
-                <Group>
-                    { character.name }
-                </Group>
+export const Character = observer((props: PropsType) => {
+    const appState = useAppStateContext();
 
-                <Group>
-                    <h2>Films:</h2>
-                    <FilmList films={character.films} />
-                </Group>
+    const { character } = props;
 
-                <Group>
-                    <Link onClick={this.redirectToMain}>Redirect to main view</Link>
-                </Group>
-            </div>
-        );
+    const redirectToMain = () => {
+        appState.currentView.redirectToMain();
     }
 
-    redirectToMain = () => {
-        this.appState.currentView.redirectToMain();
-    }
-}
+    return (
+        <div>
+            <Group>
+                { character.name }
+            </Group>
+
+            <Group>
+                <h2>Films:</h2>
+                <FilmList films={character.films} />
+            </Group>
+
+            <Group>
+                <Link onClick={redirectToMain}>Redirect to main view</Link>
+            </Group>
+        </div>
+    );
+});
+
 

@@ -21,16 +21,13 @@ export class AppState {
 
 const AppContext = React.createContext(AppState.createForContext());
 
+/*
+const defaultAppState: AppState = AppState.createForContext();
+const AppContext: React.Context<AppState> = React.createContext(defaultAppState);
+*/
+
 export const Provider = AppContext.Provider;
 
-export class AppStateComponent<PropsType = {}, StateType = {}> extends React.Component<PropsType, StateType> {
-    static contextType = AppContext;
-
-    get appState(): AppState {
-        //Fix for "any" type
-        return this.context;
-    }
-}
 
 export const useAppStateContext = (): AppState => {
     return React.useContext(AppContext);

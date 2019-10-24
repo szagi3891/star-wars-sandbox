@@ -1,33 +1,31 @@
 import * as React from 'react';
-import { AppStateComponent } from '../AppState/AppState';
 import { Loading, Link } from './Common';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
+import { useAppStateContext } from '../AppState/AppState';
 
 interface PropsType {
     characterUrl: string,
 }
 
-@observer
-export class CharacterLabel extends AppStateComponent<PropsType> {
-    render() {
-        const { characterUrl } = this.props;
+export const CharacterLabel = observer((props: PropsType) => {
+    const appState = useAppStateContext();
+    const { characterUrl } = props;
 
-        const characterResult = this.appState.models.getCharacter(characterUrl);
+    const characterResult = appState.models.getCharacter(characterUrl);
 
-        if (characterResult.type === 'loading') {
-            return <Loading />;
-        }
-
-        const character = characterResult.value;
-
-        return (
-            <Link onClick={this.onClick}>
-                { character.name }
-            </Link>
-        );
+    if (characterResult.type === 'loading') {
+        return <Loading />;
     }
 
-    onClick = () => {
-        this.appState.currentView.redirectToCharacter(this.props.characterUrl);
+    const character = characterResult.value;
+
+    const onClick = () => {
+        appState.currentView.redirectToCharacter(props.characterUrl);
     }
-}
+
+    return (
+        <Link onClick={onClick}>
+            { character.name }
+        </Link>
+    );
+});
