@@ -6,8 +6,10 @@ import { FilmDetails } from './View/FilmDetails';
 import { Loading } from './View/Common';
 import { Character } from './View/Character';
 import { FilmList } from './View/FilmList';
-import { CurrentViewMain, CurrentViewFilm, CurrentViewCharacter, CurrentViewIntro } from './AppState/CurrentViewState';
 import { observable } from 'mobx';
+import styled from '@emotion/styled';
+import { LastViewItemType } from './AppState/CurrentViewState';
+import { PageType } from './AppState/CurrentView/type';
 
 class Store {
     @observable value1: number = 0;
@@ -86,11 +88,11 @@ const RenderCharacter = observer(({characterUrl}: {characterUrl: string}) => {
 });
 
 
-export const App = observer(() => {
+export const AppInner = observer(() => {
     const appState = useAppStateContext();
     const currentView = appState.currentView.currentView;
 
-    if (currentView instanceof CurrentViewMain) {
+    if (currentView.mainView.type === 'main') {
         return (
             <>
                 <h1>Lista filmów:</h1>
@@ -99,7 +101,7 @@ export const App = observer(() => {
         )
     }
 
-    if (currentView instanceof CurrentViewIntro) {
+    if (currentView.mainView.type === 'intro') {
         return (
             <>
                 intro<br/>
@@ -109,28 +111,120 @@ export const App = observer(() => {
         );
     }
 
-    if (currentView instanceof CurrentViewFilm) {
+    if (currentView.mainView.type === 'film') {
         return (
             <>
                 <h1>Film:</h1>
-                <RenderFilm filmUrl={currentView.filmUrl} />
+                <RenderFilm filmUrl={currentView.mainView.url} />
             </>
         );
     }
 
-    if (currentView instanceof CurrentViewCharacter) {
+    if (currentView.mainView.type === 'character') {
         return (
             <>
                 <h1>Character:</h1>
-                <RenderCharacter characterUrl={currentView.character} />
+                <RenderCharacter characterUrl={currentView.mainView.character} />
             </>
         );
     }
 
-    return assertNever('App -> render', currentView);
+    return assertNever('App -> render', currentView.mainView);
 });
 
+const Wrapper = styled('div')`
+    display: flex;
+`;
 
+const Nav = styled('div')`
+    width: 400px;
+`;
+
+const showPage = (page: PageType): string => {
+    if (page.type === 'main') {
+        return 'Strona gówna';
+    }
+
+    if (page.type === 'intro') {
+        return 'Intro';
+    }
+
+    if (page.type === 'character') {
+        return `Character: ${page.character}`;
+    }
+
+    if (page.type === 'film') {
+        return `Film: ${page.url}`;
+    }
+
+    return '';
+};
+
+interface NavContentItemPropsType {
+    item: LastViewItemType
+}
+
+const NavContentItem = observer((props: NavContentItemPropsType) => {
+    const appState = useAppStateContext();
+    const currentView = appState.currentView;
+
+    const { item } = props;
+
+    return (
+        <div onClick={() => currentView.showPopup(item.page) } >
+            {showPage(item.page) }
+        </div>
+    )
+});
+
+const NavContent = observer(() => {
+    const appState = useAppStateContext();
+    const currentView = appState.currentView.currentView.lastView;
+
+    return (
+        <div>
+            { currentView.map((item) => <NavContentItem key={item.id} item={item} />) }
+        </div>
+    );
+})
+
+const PopupWrapper = styled('div')`
+    background: gray;
+    position: fixed;
+    width: 80vw;
+    height: 80vh;
+    left: 10vw;
+    top: 10vh;
+`;
+
+const Popup = observer(() => {
+    const appState = useAppStateContext();
+    const popup = appState.currentView.currentView.popup;
+
+    if (popup !== null) {
+        return (
+            <PopupWrapper onClick={appState.currentView.hidePopup}>
+                { showPage(popup) }
+            </PopupWrapper>
+        )
+    }
+
+    return null;
+});
+
+export const App = observer(() => {
+    return (
+        <Wrapper>
+            <Nav>
+                <NavContent />
+            </Nav>
+            <div>
+                <AppInner />
+            </div>
+            <Popup />
+        </Wrapper>
+    )
+});
 
 //const store = new Store();
 

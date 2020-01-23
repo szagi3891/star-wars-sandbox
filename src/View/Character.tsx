@@ -14,10 +14,6 @@ export const Character = observer((props: PropsType) => {
 
     const { character } = props;
 
-    const redirectToMain = () => {
-        appState.currentView.redirectToMain();
-    }
-
     return (
         <div>
             <Group>
@@ -30,7 +26,7 @@ export const Character = observer((props: PropsType) => {
             </Group>
 
             <Group>
-                <Link onClick={redirectToMain}>Redirect to main view</Link>
+                <Link onClick={appState.currentView.redirectToMain}>Redirect to main view</Link>
             </Group>
         </div>
     );
