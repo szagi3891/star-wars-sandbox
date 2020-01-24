@@ -110,6 +110,14 @@ export class CurrentViewState {
         return convertCurrentViewToUrl(this.currentView);
     }
 
+
+    @computed.struct get revertLastView(): Array<LastViewItemType> {
+        const lastView = this.currentView.lastView.concat([]);
+        lastView.reverse();
+        return lastView;
+    }
+
+
     static createForContext(): CurrentViewState {
         return new CurrentViewState({
             mainView: {

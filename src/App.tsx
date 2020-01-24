@@ -179,7 +179,7 @@ const NavContentItem = observer((props: NavContentItemPropsType) => {
 
 const NavContent = observer(() => {
     const appState = useAppStateContext();
-    const currentView = appState.currentView.currentView.lastView;
+    const currentView = appState.currentView.revertLastView;
 
     return (
         <div>
