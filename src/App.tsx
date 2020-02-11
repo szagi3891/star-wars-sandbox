@@ -8,6 +8,7 @@ import { Character } from './View/Character';
 import { FilmList } from './View/FilmList';
 import { observable } from 'mobx';
 import styled from '@emotion/styled';
+import { PageIntroType } from './AppState/Routing/PageIntroType';
 
 class Store {
     @observable value1: number = 0;
@@ -85,6 +86,27 @@ const RenderCharacter = observer(({characterUrl}: {characterUrl: string}) => {
     return <Character character={characterResult.value}/>;
 });
 
+interface IntroPropsType {
+    intro: PageIntroType,
+}
+
+const AppIntro = observer((props: IntroPropsType) => {
+    const { intro } = props;
+
+    if (intro.type === 'view1') {
+        return <div>view1</div>;
+    }
+
+    if (intro.type === 'view2') {
+        return <div>view2</div>;
+    }
+
+    if (intro.type === 'view3') {
+        return <div>view3</div>;
+    }
+
+    return assertNever('intro', intro);
+});
 
 export const AppInner = observer(() => {
     const appState = useAppStateContext();
@@ -105,6 +127,7 @@ export const AppInner = observer(() => {
                 intro<br/>
                 <Intro />
                 <span onClick={appState.currentView.redirectToMain}>Back to main</span>
+                <AppIntro intro={currentView.page} />
             </>
         );
     }

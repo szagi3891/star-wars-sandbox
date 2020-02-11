@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx';
-import { PageType } from './Routing/type';
+import { PageType } from './Routing/Page';
 import { urlToUrlParams } from './Routing/convert';
 
 const convertCurrentViewToUrl = (currentView: PageType): string => {
@@ -34,7 +34,10 @@ export class CurrentViewState {
 
     @action redirectToIntro = () => {
         this.currentView = {
-            type: 'intro'
+            type: 'intro',
+            page: {
+                type: 'view1'
+            }
         };
     }
 
