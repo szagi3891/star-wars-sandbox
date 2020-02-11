@@ -86,6 +86,10 @@ const RenderCharacter = observer(({characterUrl}: {characterUrl: string}) => {
     return <Character character={characterResult.value}/>;
 });
 
+const WrapperTab = styled('div')`
+    background-color: red;
+`;
+
 interface IntroPropsType {
     intro: PageIntro,
 }
@@ -96,31 +100,31 @@ const AppIntro = observer((props: IntroPropsType) => {
 
     if (page.type === 'view1') {
         return (
-            <>
+            <WrapperTab>
                 <div>view1</div>
                 <div onClick={intro.redirectTo2}>go to 2</div>
                 <div onClick={intro.redirectTo3}>go to 3</div>
-            </>
+            </WrapperTab>
         );
     }
 
     if (page.type === 'view2') {
         return (
-            <>
+            <WrapperTab>
                 <div onClick={intro.redirectTo1}>go to 1</div>
                 <div>view2</div>
                 <div onClick={intro.redirectTo3}>go to 3</div>
-            </>
+            </WrapperTab>
         );
     }
 
     if (page.type === 'view3') {
         return (
-            <>
+            <WrapperTab>
                 <div onClick={intro.redirectTo1}>go to 1</div>
                 <div onClick={intro.redirectTo2}>go to 2</div>
                 <div>view3</div>
-            </>
+            </WrapperTab>
         );
     }
 
@@ -174,6 +178,19 @@ export const AppInner = observer(() => {
     return assertNever('App -> render', page);
 });
 
+const TrzeciaZakladkaOdSlonca = observer(() => {
+    const appState = useAppStateContext();
+    const redirect = () => {
+        appState.currentView.redirectToIntro().redirectTo3();
+    };
+
+    return (
+        <div onClick={redirect}>
+            Skocz do trzeciej zakladki
+        </div>
+    )
+});
+
 const Wrapper = styled('div')`
     display: flex;
 `;
@@ -183,6 +200,7 @@ export const App = observer(() => {
         <Wrapper>
             <div>
                 <AppInner />
+                <TrzeciaZakladkaOdSlonca />
             </div>
         </Wrapper>
     )
