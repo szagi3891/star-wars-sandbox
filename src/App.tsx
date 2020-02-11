@@ -8,7 +8,7 @@ import { Character } from './View/Character';
 import { FilmList } from './View/FilmList';
 import { observable } from 'mobx';
 import styled from '@emotion/styled';
-import { PageIntroType } from './AppState/Routing/PageIntroType';
+import { PageIntro } from './AppState/Routing/PageIntro';
 
 class Store {
     @observable value1: number = 0;
@@ -87,25 +87,44 @@ const RenderCharacter = observer(({characterUrl}: {characterUrl: string}) => {
 });
 
 interface IntroPropsType {
-    intro: PageIntroType,
+    intro: PageIntro,
 }
 
 const AppIntro = observer((props: IntroPropsType) => {
     const { intro } = props;
+    const page = intro.page;
 
-    if (intro.type === 'view1') {
-        return <div>view1</div>;
+    if (page.type === 'view1') {
+        return (
+            <>
+                <div>view1</div>
+                <div onClick={intro.redirectTo2}>go to 2</div>
+                <div onClick={intro.redirectTo3}>go to 3</div>
+            </>
+        );
     }
 
-    if (intro.type === 'view2') {
-        return <div>view2</div>;
+    if (page.type === 'view2') {
+        return (
+            <>
+                <div onClick={intro.redirectTo1}>go to 1</div>
+                <div>view2</div>
+                <div onClick={intro.redirectTo3}>go to 3</div>
+            </>
+        );
     }
 
-    if (intro.type === 'view3') {
-        return <div>view3</div>;
+    if (page.type === 'view3') {
+        return (
+            <>
+                <div onClick={intro.redirectTo1}>go to 1</div>
+                <div onClick={intro.redirectTo2}>go to 2</div>
+                <div>view3</div>
+            </>
+        );
     }
 
-    return assertNever('intro', intro);
+    return assertNever('intro', page);
 });
 
 export const AppInner = observer(() => {
@@ -122,12 +141,14 @@ export const AppInner = observer(() => {
     }
 
     if (currentView.type === 'intro') {
+        const { page } = currentView;
+
         return (
             <>
                 intro<br/>
                 <Intro />
                 <span onClick={appState.currentView.redirectToMain}>Back to main</span>
-                <AppIntro intro={currentView.page} />
+                <AppIntro intro={page} />
             </>
         );
     }

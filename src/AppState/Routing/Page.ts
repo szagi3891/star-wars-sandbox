@@ -1,10 +1,10 @@
-import { PageIntroType } from "./PageIntroType";
+import { PageIntro } from "./PageIntro";
 
 export type PageType = {
     readonly type: 'main'
 } | {
     readonly type: 'intro';
-    readonly page: PageIntroType,
+    readonly page: PageIntro
 } | {
     readonly type: 'film';
     readonly url: string;

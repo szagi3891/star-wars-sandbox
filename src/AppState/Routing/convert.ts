@@ -1,4 +1,5 @@
 import { PageType } from "./Page";
+import { PageIntro } from './PageIntro';
 
 export const urlToUrlParams = (url: string): Array<string> => url.split('/').filter((chunk) => chunk.trim() !== '');
 
@@ -35,9 +36,7 @@ export const convertUrlToPageType  = (url: string): PageType => {
     if (urlChunks.length === 1 && urlChunks[0] === 'intro') {
         return {
             type: 'intro',
-            page: {
-                type: 'view1'
-            }
+            page: new PageIntro()
         };
     }
 

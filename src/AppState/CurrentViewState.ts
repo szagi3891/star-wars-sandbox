@@ -1,4 +1,5 @@
 import { observable, action, computed } from 'mobx';
+import { PageIntro } from './Routing/PageIntro';
 import { PageType } from './Routing/Page';
 import { urlToUrlParams } from './Routing/convert';
 
@@ -35,9 +36,7 @@ export class CurrentViewState {
     @action redirectToIntro = () => {
         this.currentView = {
             type: 'intro',
-            page: {
-                type: 'view1'
-            }
+            page: new PageIntro()
         };
     }
 
