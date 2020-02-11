@@ -129,9 +129,9 @@ const AppIntro = observer((props: IntroPropsType) => {
 
 export const AppInner = observer(() => {
     const appState = useAppStateContext();
-    const currentView = appState.currentView.currentView;
+    const page = appState.currentView.page;
 
-    if (currentView.type === 'main') {
+    if (page.type === 'main') {
         return (
             <>
                 <h1>Lista filmów:</h1>
@@ -140,38 +140,38 @@ export const AppInner = observer(() => {
         )
     }
 
-    if (currentView.type === 'intro') {
-        const { page } = currentView;
+    if (page.type === 'intro') {
+        const pageIntro = page.page;
 
         return (
             <>
                 intro<br/>
                 <Intro />
                 <span onClick={appState.currentView.redirectToMain}>Back to main</span>
-                <AppIntro intro={page} />
+                <AppIntro intro={pageIntro} />
             </>
         );
     }
 
-    if (currentView.type === 'film') {
+    if (page.type === 'film') {
         return (
             <>
                 <h1>Film:</h1>
-                <RenderFilm filmUrl={currentView.url} />
+                <RenderFilm filmUrl={page.url} />
             </>
         );
     }
 
-    if (currentView.type === 'character') {
+    if (page.type === 'character') {
         return (
             <>
                 <h1>Character:</h1>
-                <RenderCharacter characterUrl={currentView.character} />
+                <RenderCharacter characterUrl={page.character} />
             </>
         );
     }
 
-    return assertNever('App -> render', currentView);
+    return assertNever('App -> render', page);
 });
 
 const Wrapper = styled('div')`

@@ -1,20 +1,20 @@
 import * as React from 'react';
 import { Models } from './Models';
-import { CurrentViewState } from './CurrentViewState';
+import { Page } from './Routing/Page';
 
 export class AppState {
 
-    readonly currentView: CurrentViewState;
+    readonly currentView: Page;
     readonly models: Models = new Models();
 
-    constructor(currentView: CurrentViewState) {
+    constructor(currentView: Page) {
         this.currentView = currentView;
         this.models = new Models();
     }
 
     static createForContext(): AppState {
         return new AppState(
-            CurrentViewState.createForContext()
+            new Page()
         );
     }
 }

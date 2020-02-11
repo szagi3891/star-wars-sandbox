@@ -1,72 +1,42 @@
-import { observable, action, computed } from 'mobx';
-import { PageIntro } from './Routing/PageIntro';
-import { PageType } from './Routing/Page';
-import { urlToUrlParams } from './Routing/convert';
+import { observable, action } from 'mobx';
+import { Page } from './Routing/Page';
+//import { urlToUrlParams } from './Routing/convert';
 
-const convertCurrentViewToUrl = (currentView: PageType): string => {
-    return `/${btoa(JSON.stringify(currentView))}`;
-};
+// const convertCurrentViewToUrl = (page: Page): string => {
+//     return `/${btoa(JSON.stringify(page.page))}`;
+// };
 
-export const convertUrlToCurrentView = (url: string): PageType => {
-    const params = urlToUrlParams(url);
+// export const convertUrlToCurrentView = (url: string): PageType => {
+//     const params = urlToUrlParams(url);
 
-    if (params.length === 0) {
-        return {
-            type: 'main'
-        };
-    }
+//     if (params.length === 0) {
+//         return {
+//             type: 'main'
+//         };
+//     }
 
-    return JSON.parse(atob(params[0]));         //niebezpieczny kod
-};
+//     return JSON.parse(atob(params[0]));         //niebezpieczny kod
+// };
 
 export class CurrentViewState {
 
-    @observable.ref currentView: PageType;
+    @observable.ref currentView: Page;
 
-    constructor(startView: PageType) {
+    constructor(startView: Page) {
         this.currentView = startView;
     }
 
-    @action redirectToMain = () => {
-        this.currentView = {
-            type: 'main'
-        };
-    }
-
-    @action redirectToIntro = () => {
-        this.currentView = {
-            type: 'intro',
-            page: new PageIntro()
-        };
-    }
-
-    @action redirectToFilm = (filmUrl: string) => {
-        this.currentView = {
-            type: 'film',
-            url: filmUrl
-        };
-    }
-
-    @action redirectToCharacter = (character: string) => {
-        this.currentView = {
-            type: 'character',
-            character,
-        };
-    }
-
-    @action setCurrentView(currentView: PageType) {
+    @action setCurrentView(currentView: Page) {
         console.info('Ustawiam currentView', currentView);
         this.currentView = currentView;
     }
 
-    @computed get windowLocation(): string {
-        return convertCurrentViewToUrl(this.currentView);
-    }
+    // @computed get windowLocation(): string {
+    //     return convertCurrentViewToUrl(this.currentView);
+    // }
 
 
     static createForContext(): CurrentViewState {
-        return new CurrentViewState({
-            type: 'main'
-        });
+        return new CurrentViewState(new Page());
     }
 }

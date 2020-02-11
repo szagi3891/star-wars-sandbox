@@ -1,4 +1,5 @@
 import { PageIntro } from "./PageIntro";
+import { observable, action } from "mobx";
 
 export type PageType = {
     readonly type: 'main'
@@ -13,3 +14,39 @@ export type PageType = {
     readonly character: string,
 };
 
+export class Page {
+    @observable page: PageType = {
+        type: 'main',
+    };
+
+    @action redirectToMain = () => {
+        this.page = {
+            type: 'main'
+        };
+    }
+
+    @action redirectToIntro = (): PageIntro => {
+        const newIntro = new PageIntro();
+
+        this.page = {
+            type: 'intro',
+            page: newIntro
+        };
+
+        return newIntro;
+    }
+
+    @action redirectToFilm = (filmUrl: string) => {
+        this.page = {
+            type: 'film',
+            url: filmUrl
+        };
+    }
+
+    @action redirectToCharacter = (character: string) => {
+        this.page = {
+            type: 'character',
+            character,
+        };
+    }
+}
