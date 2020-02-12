@@ -20,15 +20,15 @@ import { Page } from './Routing/Page';
 
 export class CurrentViewState {
 
-    @observable.ref currentView: Page;
+    @observable.ref page: Page;
 
     constructor(startView: Page) {
-        this.currentView = startView;
+        this.page = startView;
     }
 
-    @action setCurrentView(currentView: Page) {
-        console.info('Ustawiam currentView', currentView);
-        this.currentView = currentView;
+    @action setCurrentView(page: Page) {
+        console.info('Ustawiam currentView', page);
+        this.page = page;
     }
 
     // @computed get windowLocation(): string {

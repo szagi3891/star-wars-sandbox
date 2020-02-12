@@ -145,14 +145,14 @@ export const AppInner = observer(() => {
     }
 
     if (page.type === 'intro') {
-        const pageIntro = page.page;
+        const subpage = page.subpage;
 
         return (
             <>
                 intro<br/>
                 <Intro />
                 <span onClick={appState.currentView.redirectToMain}>Back to main</span>
-                <AppIntro intro={pageIntro} />
+                <AppIntro intro={subpage} />
             </>
         );
     }

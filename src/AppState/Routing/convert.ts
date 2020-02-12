@@ -36,7 +36,7 @@ export const convertUrlToPageType  = (url: string): PageType => {
     if (urlChunks.length === 1 && urlChunks[0] === 'intro') {
         return {
             type: 'intro',
-            page: new PageIntro()
+            subpage: new PageIntro()
         };
     }
 

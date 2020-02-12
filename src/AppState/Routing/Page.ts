@@ -5,7 +5,7 @@ export type PageType = {
     readonly type: 'main'
 } | {
     readonly type: 'intro';
-    readonly page: PageIntro
+    readonly subpage: PageIntro
 } | {
     readonly type: 'film';
     readonly url: string;
@@ -30,7 +30,7 @@ export class Page {
 
         this.page = {
             type: 'intro',
-            page: newIntro
+            subpage: newIntro
         };
 
         return newIntro;
