@@ -15,12 +15,12 @@ export type PageType = {
 };
 
 export class Page {
-    @observable page: PageType = {
+    @observable view: PageType = {
         type: 'main',
     };
 
     @action redirectToMain = () => {
-        this.page = {
+        this.view = {
             type: 'main'
         };
     }
@@ -28,7 +28,7 @@ export class Page {
     @action redirectToIntro = (): PageIntro => {
         const newIntro = new PageIntro();
 
-        this.page = {
+        this.view = {
             type: 'intro',
             subpage: newIntro
         };
@@ -37,14 +37,14 @@ export class Page {
     }
 
     @action redirectToFilm = (filmUrl: string) => {
-        this.page = {
+        this.view = {
             type: 'film',
             url: filmUrl
         };
     }
 
     @action redirectToCharacter = (character: string) => {
-        this.page = {
+        this.view = {
             type: 'character',
             character,
         };

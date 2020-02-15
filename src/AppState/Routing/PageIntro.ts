@@ -9,24 +9,24 @@ export type PageIntroType = {
 };
 
 export class PageIntro {
-    @observable page: PageIntroType = {
+    @observable view: PageIntroType = {
         type: 'view1',
     };
 
     redirectTo1 = () => {
-        this.page = {
+        this.view = {
             type: 'view1',
         }
     }
 
     redirectTo2 = () => {
-        this.page = {
+        this.view = {
             type: 'view2',
         }
     }
 
     redirectTo3 = () => {
-        this.page = {
+        this.view = {
             type: 'view3',
         }
     }

@@ -96,9 +96,9 @@ interface IntroPropsType {
 
 const AppIntro = observer((props: IntroPropsType) => {
     const { intro } = props;
-    const page = intro.page;
+    const view = intro.view;
 
-    if (page.type === 'view1') {
+    if (view.type === 'view1') {
         return (
             <WrapperTab>
                 <div>view1</div>
@@ -108,7 +108,7 @@ const AppIntro = observer((props: IntroPropsType) => {
         );
     }
 
-    if (page.type === 'view2') {
+    if (view.type === 'view2') {
         return (
             <WrapperTab>
                 <div onClick={intro.redirectTo1}>go to 1</div>
@@ -118,7 +118,7 @@ const AppIntro = observer((props: IntroPropsType) => {
         );
     }
 
-    if (page.type === 'view3') {
+    if (view.type === 'view3') {
         return (
             <WrapperTab>
                 <div onClick={intro.redirectTo1}>go to 1</div>
@@ -128,14 +128,14 @@ const AppIntro = observer((props: IntroPropsType) => {
         );
     }
 
-    return assertNever('intro', page);
+    return assertNever('intro', view);
 });
 
 export const AppInner = observer(() => {
     const appState = useAppStateContext();
-    const page = appState.currentView.page;
+    const view = appState.currentView.view;
 
-    if (page.type === 'main') {
+    if (view.type === 'main') {
         return (
             <>
                 <h1>Lista filmów:</h1>
@@ -144,8 +144,8 @@ export const AppInner = observer(() => {
         )
     }
 
-    if (page.type === 'intro') {
-        const subpage = page.subpage;
+    if (view.type === 'intro') {
+        const subpage = view.subpage;
 
         return (
             <>
@@ -157,25 +157,25 @@ export const AppInner = observer(() => {
         );
     }
 
-    if (page.type === 'film') {
+    if (view.type === 'film') {
         return (
             <>
                 <h1>Film:</h1>
-                <RenderFilm filmUrl={page.url} />
+                <RenderFilm filmUrl={view.url} />
             </>
         );
     }
 
-    if (page.type === 'character') {
+    if (view.type === 'character') {
         return (
             <>
                 <h1>Character:</h1>
-                <RenderCharacter characterUrl={page.character} />
+                <RenderCharacter characterUrl={view.character} />
             </>
         );
     }
 
-    return assertNever('App -> render', page);
+    return assertNever('App -> render', view);
 });
 
 const TrzeciaZakladkaOdSlonca = observer(() => {
