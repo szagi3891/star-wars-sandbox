@@ -139,7 +139,11 @@ export const AppInner = observer(() => {
         return (
             <>
                 <h1>Lista filmów:</h1>
-                <RenderMain />
+                { <RenderMain /> }
+                {
+                    //@ts-expect-error
+                    <p label="coś bezsensownego">Test ignore</p>
+                }
             </>
         )
     }
