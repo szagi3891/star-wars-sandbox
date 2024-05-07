@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { CharacterModel } from '../AppState/api';
-import { Link, Group } from './Common';
+import { Link, Group, Loading } from './Common';
 // import { FilmList } from './FilmList';
 import { observer } from 'mobx-react-lite';
 import { useAppStateContext } from '../AppState/AppState';
+import { CharacterIdModel } from '../AppState/ models/CharacterIdModel';
 
 interface PropsType {
-    character: CharacterModel,
+    character: CharacterIdModel,
 }
 
 export const Character = observer((props: PropsType) => {
@@ -14,10 +14,37 @@ export const Character = observer((props: PropsType) => {
 
     const { character } = props;
 
+    const details = character.model().details;
+
+    if (details.type === 'loading') {
+        return <Loading />;
+    }
+
+    if (details.type === 'error') {
+        return (
+            <div>
+                Error: {details.message}
+            </div>
+        );
+    }
+
+// const RenderCharacter = observer(({characterUrl}: {characterUrl: CharacterIdModel}) => {
+//     const appState = useAppStateContext();
+
+//     const characterResult = appState.models.getCharacter(characterUrl);
+
+//     if (characterResult.type === 'loading') {
+//         return <Loading/>;
+//     }
+
+//     return <Character character={characterResult.value}/>;
+// });
+
+
     return (
         <div>
             <Group>
-                { character.name }
+                { details.value.name }
             </Group>
 
             <Group>

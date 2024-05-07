@@ -33,7 +33,7 @@ export const FilmDetails = observer((props: PropsType) => {
 
     const renderCharacters = () => {
         return details.value.characters.map(
-            (characterUrl) => <CharacterLabel key={characterUrl} characterUrl={characterUrl} />
+            (characterUrl) => <CharacterLabel key={characterUrl.reactKey} characterUrl={characterUrl} />
         );
     }
     return (

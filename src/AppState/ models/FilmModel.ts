@@ -2,6 +2,7 @@ import { makeObservable } from "mobx";
 import { z } from 'zod';
 import { Resource, Result } from "../../utils/Resource";
 import { AutoMap } from "../../utils/AutoMap";
+import { CharacterIdModel } from "./CharacterIdModel";
 
 const ResponseZod = z.object({
     title: z.string(),
@@ -11,7 +12,13 @@ const ResponseZod = z.object({
     characters: z.array(z.string()),
 });
 
-export type FilmModelType = z.TypeOf<typeof ResponseZod>;
+export type FilmModelType = {
+    title: string,
+    director: string,
+    producer: string,
+    created: string,
+    characters: Array<CharacterIdModel>,
+};
 
 const getFilm = async (url: string) => {
     // https://swapi.dev/api/films/2/
@@ -20,7 +27,10 @@ const getFilm = async (url: string) => {
     const json = await response.json();
 
     const data = ResponseZod.parse(json);
-    return data;
+    return {
+        ...data,
+        characters: data.characters.map(url => CharacterIdModel.get(url))
+    };
 };
 
 export class FilmModel {

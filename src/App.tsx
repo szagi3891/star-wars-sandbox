@@ -73,18 +73,6 @@ const RenderMain = observer(() => {
 });
 
 
-const RenderCharacter = observer(({characterUrl}: {characterUrl: string}) => {
-    const appState = useAppStateContext();
-
-    const characterResult = appState.models.getCharacter(characterUrl);
-
-    if (characterResult.type === 'loading') {
-        return <Loading/>;
-    }
-
-    return <Character character={characterResult.value}/>;
-});
-
 const WrapperTab = styled('div')`
     background-color: red;
 `;
@@ -173,7 +161,7 @@ export const AppInner = observer(() => {
         return (
             <>
                 <h1>Character:</h1>
-                <RenderCharacter characterUrl={view.character} />
+                <Character character={view.character}/>
             </>
         );
     }

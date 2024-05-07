@@ -1,3 +1,4 @@
+import { CharacterIdModel } from "../ models/CharacterIdModel";
 import { FilmIdModel } from "../ models/FilmIdModel";
 import { PageIntro } from "./PageIntro";
 import { observable, action, makeObservable } from "mobx";
@@ -12,7 +13,7 @@ export type PageType = {
     readonly url: FilmIdModel;
 } | {
     readonly type: 'character',
-    readonly character: string,
+    readonly character: CharacterIdModel,
 };
 
 export class Page {
@@ -47,7 +48,7 @@ export class Page {
         };
     }
 
-    @action redirectToCharacter = (character: string) => {
+    @action redirectToCharacter = (character: CharacterIdModel) => {
         this.view = {
             type: 'character',
             character,
