@@ -21,8 +21,6 @@ export interface FilmModel {
     characters: Array<string>,
 }
 
-export const getFilmModel = async (urlId: string) => getListJson<FilmModel>(urlId);
-
 export interface CharacterModel {
     name: string,
     films: Array<string>,

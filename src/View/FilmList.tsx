@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FilmLabel } from './FilmLabel';
 import { observer } from 'mobx-react-lite';
-import { FilmListModelItemType } from '../AppState/ models/FilmsModel';
+import { FilmListModelItemType } from '../AppState/ models/FilmListModel';
 
 interface PropsType {
     films: Array<FilmListModelItemType>

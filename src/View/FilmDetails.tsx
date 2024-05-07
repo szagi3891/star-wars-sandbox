@@ -1,25 +1,38 @@
 import * as React from 'react';
-import { FilmModel } from '../AppState/api';
-import { Link, Group } from './Common';
+import { Link, Group, Loading } from './Common';
 import { CharacterLabel } from './CharacterLabel';
 import { observer } from 'mobx-react-lite';
 import { useAppStateContext } from '../AppState/AppState';
+import { FilmIdModel } from '../AppState/ models/FilmIdModel';
 
 interface PropsType {
-    film: FilmModel,
+    id: FilmIdModel,
 }
 
 export const FilmDetails = observer((props: PropsType) => {
     const appState = useAppStateContext();
+    const { id } = props;
 
-    const { film } = props;
+    const details = id.model().details;
+
+    if (details.type === 'loading') {
+        return <Loading/>;
+    }
+
+    if (details.type === 'error') {
+        return (
+            <div>
+                Błąd ładowania filmu: {details.message}
+            </div>
+        );
+    }
 
     const redirectToMain = () => {
         appState.currentView.redirectToMain();
     }
 
     const renderCharacters = () => {
-        return props.film.characters.map(
+        return details.value.characters.map(
             (characterUrl) => <CharacterLabel key={characterUrl} characterUrl={characterUrl} />
         );
     }
@@ -27,8 +40,8 @@ export const FilmDetails = observer((props: PropsType) => {
         <>
             <Group>
                 <h2>Details:</h2>
-                <div>Title: {film.title}</div>
-                <div>Created: {film.created}</div>
+                <div>Title: {details.value.title}</div>
+                <div>Created: {details.value.created}</div>
             </Group>
 
             <Group>

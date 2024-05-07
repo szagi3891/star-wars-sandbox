@@ -32,7 +32,7 @@ const getList = async (): Promise<Array<FilmListModelItemType>> => {
 
 export class FilmListModel {
     protected nominal: 'nominal' = 'nominal';
-    public readonly type: 'FilmsModel' = 'FilmsModel';
+    public readonly type: 'FilmListModel' = 'FilmListModel';
 
     static mapa: AutoMapWeak<undefined, FilmListModel> = new AutoMapWeak(() => {
         return new FilmListModel();

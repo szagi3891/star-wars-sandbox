@@ -1,11 +1,12 @@
-import { AutoMapWeak } from "../../utils/AutoMapWeak";
+import { AutoMap } from "../../utils/AutoMap";
+import { FilmModel } from "./FilmModel";
 
 
 export class FilmIdModel {
     protected nominal: 'nominal' = 'nominal';
     public readonly type: 'FilmIdModel' = 'FilmIdModel';
 
-    static mapa: AutoMapWeak<string, FilmIdModel> = new AutoMapWeak((url) => {
+    static mapa: AutoMap<string, FilmIdModel> = new AutoMap((url) => {
         return new FilmIdModel(url);
     });
 
@@ -14,5 +15,9 @@ export class FilmIdModel {
     }
 
     private constructor(public readonly url: string) {
+    }
+
+    public model(): FilmModel {
+        return FilmModel.get(this.url);
     }
 }
