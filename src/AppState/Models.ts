@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { makeObservable, observable } from "mobx";
 import { getFilms, FilmModel, CharacterModel, getFilmModel, getCharacterModel } from "./api";
 
 type ResultLoading = {
@@ -17,6 +17,7 @@ class Resource<T> {
     @observable value: null | Result<T>;
 
     constructor(getValue: () => Promise<T>) {
+        makeObservable(this);
         this.getValue = getValue;
         this.value = null;
     }

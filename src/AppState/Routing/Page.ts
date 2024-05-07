@@ -1,5 +1,5 @@
 import { PageIntro } from "./PageIntro";
-import { observable, action } from "mobx";
+import { observable, action, makeObservable } from "mobx";
 
 export type PageType = {
     readonly type: 'main'
@@ -15,6 +15,9 @@ export type PageType = {
 };
 
 export class Page {
+    constructor() {
+        makeObservable(this);
+    }
     @observable view: PageType = {
         type: 'main',
     };

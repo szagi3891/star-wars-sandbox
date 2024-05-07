@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, makeObservable } from 'mobx';
 import { Page } from './Routing/Page';
 //import { urlToUrlParams } from './Routing/convert';
 
@@ -23,6 +23,7 @@ export class CurrentViewState {
     @observable.ref page: Page;
 
     constructor(startView: Page) {
+        makeObservable(this);
         this.page = startView;
     }
 

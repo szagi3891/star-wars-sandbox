@@ -6,7 +6,7 @@ import { FilmDetails } from './View/FilmDetails';
 import { Loading } from './View/Common';
 import { Character } from './View/Character';
 import { FilmList } from './View/FilmList';
-import { observable } from 'mobx';
+import { makeObservable, observable } from 'mobx';
 import styled from '@emotion/styled';
 import { PageIntro } from './AppState/Routing/PageIntro';
 
@@ -15,6 +15,9 @@ class Store {
     @observable value2: number = 0;
     @observable value3: number = 0;
     
+    constructor() {
+        makeObservable(this);
+    }
     public inc1 = () => {
         this.value1++;
     }

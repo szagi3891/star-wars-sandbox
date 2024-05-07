@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { makeObservable, observable } from "mobx";
 
 export type PageIntroType = {
     type: 'view1'
@@ -9,6 +9,10 @@ export type PageIntroType = {
 };
 
 export class PageIntro {
+    constructor() {
+        makeObservable(this);
+    }
+
     @observable view: PageIntroType = {
         type: 'view1',
     };
