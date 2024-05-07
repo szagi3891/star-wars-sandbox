@@ -1,5 +1,6 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+// import * as ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import { Provider, AppState } from './AppState/AppState';
 // import { CurrentViewState/*, convertUrlToCurrentView*/ } from './AppState/CurrentViewState';
@@ -33,9 +34,14 @@ const appState = new AppState(page);
 //     router.setCurrentView(currentView);
 // };
 
-ReactDOM.render((
-    <Provider value={appState}>
-        <App />
-    </Provider>
-), document.getElementById('root'));
+const root = document.getElementById('root');
 
+if (root === null) {
+    console.error('Brakuje root');
+} else {
+    createRoot(root).render(
+        <Provider value={appState}>
+            <App />
+        </Provider>
+    );
+}

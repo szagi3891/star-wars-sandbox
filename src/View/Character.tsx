@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CharacterModel } from '../AppState/api';
 import { Link, Group } from './Common';
-import { FilmList } from './FilmList';
+// import { FilmList } from './FilmList';
 import { observer } from 'mobx-react-lite';
 import { useAppStateContext } from '../AppState/AppState';
 
@@ -22,7 +22,8 @@ export const Character = observer((props: PropsType) => {
 
             <Group>
                 <h2>Films:</h2>
-                <FilmList films={character.films} />
+                //TODO - przywrócić ten komponent
+                {/* <FilmList films={character.films} /> */}
             </Group>
 
             <Group>

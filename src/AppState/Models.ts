@@ -1,5 +1,5 @@
 import { makeObservable, observable } from "mobx";
-import { getFilms, FilmModel, CharacterModel, getFilmModel, getCharacterModel } from "./api";
+import { FilmModel, CharacterModel, getFilmModel, getCharacterModel } from "./api";
 
 type ResultLoading = {
     type: 'loading'
@@ -10,9 +10,9 @@ type ResultReady<T> = {
     value: T
 };
 
-type Result<T> = ResultLoading | ResultReady<T>;
+export type Result<T> = ResultLoading | ResultReady<T>;
 
-class Resource<T> {
+export class Resource<T> {
     readonly getValue: () => Promise<T>;
     @observable value: null | Result<T>;
 
@@ -30,6 +30,7 @@ class Resource<T> {
 
             (async () => {
                 const value = await this.getValue();
+                console.info('ready ...', value);
                 this.value = {
                     type: 'ready',
                     value: value
@@ -63,7 +64,7 @@ class MobxAutoNew<K, V> {
 
 export class Models {
 
-    private readonly films: Resource<Array<string>> = new Resource(getFilms);
+    // private readonly films: Resource<Array<string>> = new Resource(getFilms);
     private readonly filmModel: MobxAutoNew<string, Resource<FilmModel>> = new MobxAutoNew(
         (filmUrl: string) => new Resource(
             () => getFilmModel(filmUrl)
@@ -76,9 +77,9 @@ export class Models {
         )
     );
 
-    getFilms(): Result<Array<string>> {
-        return this.films.get();
-    }
+    // getFilms(): Result<Array<string>> {
+    //     return this.films.get();
+    // }
 
     getFilm(id: string): Result<FilmModel> {
         return this.filmModel.get(id).get();

@@ -2,13 +2,15 @@ import * as React from 'react';
 import { observer, useLocalStore, /* useLocalStore, useObserver*/ } from 'mobx-react-lite';
 import { useAppStateContext } from './AppState/AppState';
 import { assertNever } from './assertNever';
-import { FilmDetails } from './View/FilmDetails';
+// import { FilmDetails } from './View/FilmDetails';
 import { Loading } from './View/Common';
 import { Character } from './View/Character';
 import { FilmList } from './View/FilmList';
 import { makeObservable, observable } from 'mobx';
 import styled from '@emotion/styled';
 import { PageIntro } from './AppState/Routing/PageIntro';
+import { FilmsModel } from './AppState/ models/FilmsModel';
+import { FilmIdModel } from './AppState/ models/FilmIdModel';
 
 class Store {
     @observable value1: number = 0;
@@ -49,7 +51,8 @@ const Intro = observer(() => {
 const RenderMain = observer(() => {
     const appState = useAppStateContext();
 
-    const films = appState.models.getFilms();
+    const films = FilmsModel.get().list;
+    console.info('films do wyrenderowanias', films);
 
     if (films.type === 'loading') {
         return <Loading/>;
@@ -64,16 +67,22 @@ const RenderMain = observer(() => {
 });
 
 
-const RenderFilm = observer(({filmUrl}: {filmUrl: string}) => {
-    const appState = useAppStateContext();
+const RenderFilm = observer(({id}: {id: FilmIdModel}) => {
+    // const appState = useAppStateContext();
 
-    const filmItem = appState.models.getFilm(filmUrl);
+    // const filmItem = appState.models.getFilm(filmUrl);
 
-    if (filmItem.type === 'loading') {
-        return <Loading/>;
-    }
+    // if (filmItem.type === 'loading') {
+    //     return <Loading/>;
+    // }
 
-    return <FilmDetails film={filmItem.value}/>;
+    // return <FilmDetails film={filmItem.value}/>;
+
+    return (
+        <div>
+            Ładowanie filmu - TODO {id.url}
+        </div>
+    )
 });
 
 
@@ -168,7 +177,7 @@ export const AppInner = observer(() => {
         return (
             <>
                 <h1>Film:</h1>
-                <RenderFilm filmUrl={view.url} />
+                <RenderFilm id={view.url} />
             </>
         );
     }

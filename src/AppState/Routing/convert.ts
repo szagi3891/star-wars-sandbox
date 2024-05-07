@@ -1,3 +1,4 @@
+import { FilmIdModel } from "../ models/FilmIdModel";
 import { PageType } from "./Page";
 import { PageIntro } from './PageIntro';
 
@@ -14,7 +15,7 @@ export const convertPageTypeToUrl = (page: PageType): string => {
 
 
     if (page.type === 'film') {
-        return `/film/${btoa(page.url)}`;
+        return `/film/${btoa(page.url.url)}`;
     }
 
     if (page.type === 'intro') {
@@ -43,7 +44,7 @@ export const convertUrlToPageType  = (url: string): PageType => {
     if (urlChunks.length === 2 && urlChunks[0] === 'film') {
         return {
             type: 'film',
-            url: atob(urlChunks[1])
+            url: FilmIdModel.get(atob(urlChunks[1]))
         };
     }
 

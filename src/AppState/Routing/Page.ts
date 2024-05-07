@@ -1,3 +1,4 @@
+import { FilmIdModel } from "../ models/FilmIdModel";
 import { PageIntro } from "./PageIntro";
 import { observable, action, makeObservable } from "mobx";
 
@@ -8,7 +9,7 @@ export type PageType = {
     readonly subpage: PageIntro
 } | {
     readonly type: 'film';
-    readonly url: string;
+    readonly url: FilmIdModel;
 } | {
     readonly type: 'character',
     readonly character: string,
@@ -39,7 +40,7 @@ export class Page {
         return newIntro;
     }
 
-    @action redirectToFilm = (filmUrl: string) => {
+    @action redirectToFilm = (filmUrl: FilmIdModel) => {
         this.view = {
             type: 'film',
             url: filmUrl

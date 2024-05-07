@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "ts-check": "yarn run tsc --noEmit -p .",
-    "ts-check:watch": "yarn run tsc --noEmit -p . --watch",
+    "ts-check": "./node_modules/.bin/tsc --noEmit -p .",
+    "ts-check:watch": "./node_modules/.bin/tsc --noEmit -p . --watch",
     "start": "parcel ./src/index.html"
   },
   "dependencies": {
@@ -22,7 +22,8 @@
     "parcel": "^2.12.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "zod": "^3.23.6"
   },
   "devDependencies": {
     "process": "^0.11.10"
