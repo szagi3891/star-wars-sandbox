@@ -9,7 +9,7 @@ import { FilmList } from './View/FilmList';
 import { makeObservable, observable } from 'mobx';
 import styled from '@emotion/styled';
 import { PageIntro } from './AppState/Routing/PageIntro';
-import { FilmsModel } from './AppState/ models/FilmsModel';
+import { FilmListModel } from './AppState/ models/FilmsModel';
 import { FilmIdModel } from './AppState/ models/FilmIdModel';
 
 class Store {
@@ -51,11 +51,19 @@ const Intro = observer(() => {
 const RenderMain = observer(() => {
     const appState = useAppStateContext();
 
-    const films = FilmsModel.get().list;
+    const films = FilmListModel.get().list;
     console.info('films do wyrenderowanias', films);
 
     if (films.type === 'loading') {
         return <Loading/>;
+    }
+
+    if (films.type === 'error') {
+        return (
+            <div>
+                Błąd ładowania listy filmów: {films.message}
+            </div>
+        )
     }
 
     return (

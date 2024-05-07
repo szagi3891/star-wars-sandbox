@@ -1,6 +1,5 @@
 import { makeObservable } from "mobx";
 import { z } from 'zod';
-// import { Resource, Result } from "../Models";
 import { AutoMapWeak } from "../../utils/AutoMapWeak";
 import { FilmIdModel } from "./FilmIdModel";
 import { Resource, Result } from "../../utils/Resource";
@@ -14,12 +13,12 @@ const Response = z.object({
     results: z.array(FilmZod)
 });
 
-export interface FilmsModelItemType {
+export interface FilmListModelItemType {
     title: string,
     id: FilmIdModel,
 }
 
-const getList = async (): Promise<Array<FilmsModelItemType>> => {
+const getList = async (): Promise<Array<FilmListModelItemType>> => {
     const response = await fetch('https://swapi.dev/api/films');
     const json = await response.json();
 
@@ -31,25 +30,25 @@ const getList = async (): Promise<Array<FilmsModelItemType>> => {
     }));
 }
 
-export class FilmsModel {
+export class FilmListModel {
     protected nominal: 'nominal' = 'nominal';
     public readonly type: 'FilmsModel' = 'FilmsModel';
 
-    static mapa: AutoMapWeak<undefined, FilmsModel> = new AutoMapWeak(() => {
-        return new FilmsModel();
+    static mapa: AutoMapWeak<undefined, FilmListModel> = new AutoMapWeak(() => {
+        return new FilmListModel();
     });
 
-    static get(): FilmsModel {
-        return FilmsModel.mapa.get(undefined);
+    static get(): FilmListModel {
+        return FilmListModel.mapa.get(undefined);
     }
 
-    private data: Resource<Array<FilmsModelItemType>> = new Resource(getList);
+    private data: Resource<Array<FilmListModelItemType>> = new Resource(getList);
 
     private constructor() {
         makeObservable(this);
     }
 
-    get list(): Result<FilmsModelItemType[]> {
+    get list(): Result<FilmListModelItemType[]> {
         return this.data.get();
     }
 }
