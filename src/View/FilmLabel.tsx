@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Link } from './Common';
+import { Link, Loading } from './Common';
 import { observer } from 'mobx-react-lite';
 import { useAppStateContext } from '../AppState/AppState';
 import { FilmIdModel } from '../AppState/ models/FilmIdModel';
 
 interface PropsType {
-    title: string,
     id: FilmIdModel,
 }
 
@@ -16,6 +15,20 @@ export const FilmLabel = observer((props: PropsType) => {
         appState.currentView.redirectToFilm(props.id);
     }
 
+    const details = props.id.model().details;
+
+    if (details.type === 'loading') {
+        return <Loading />;
+    }
+
+    if (details.type === 'error') {
+        return (
+            <div>
+                Error: {details.message}
+            </div>
+        );
+    }
+    
     // const { filmUrl } = props;
     // const filmItem = appState.models.getFilm(filmUrl);
 
@@ -25,7 +38,7 @@ export const FilmLabel = observer((props: PropsType) => {
 
     return (
         <Link onClick={onClick}>
-            {props.title}
+            {details.value.title}
         </Link>
     );
 });

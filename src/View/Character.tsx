@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link, Group, Loading } from './Common';
-// import { FilmList } from './FilmList';
+import { FilmList } from './FilmList';
 import { observer } from 'mobx-react-lite';
 import { useAppStateContext } from '../AppState/AppState';
 import { CharacterIdModel } from '../AppState/ models/CharacterIdModel';
@@ -28,19 +28,6 @@ export const Character = observer((props: PropsType) => {
         );
     }
 
-// const RenderCharacter = observer(({characterUrl}: {characterUrl: CharacterIdModel}) => {
-//     const appState = useAppStateContext();
-
-//     const characterResult = appState.models.getCharacter(characterUrl);
-
-//     if (characterResult.type === 'loading') {
-//         return <Loading/>;
-//     }
-
-//     return <Character character={characterResult.value}/>;
-// });
-
-
     return (
         <div>
             <Group>
@@ -49,8 +36,7 @@ export const Character = observer((props: PropsType) => {
 
             <Group>
                 <h2>Films:</h2>
-                //TODO - przywrócić ten komponent
-                {/* <FilmList films={character.films} /> */}
+                <FilmList films={details.value.films} />
             </Group>
 
             <Group>

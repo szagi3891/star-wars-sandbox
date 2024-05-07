@@ -1,13 +1,9 @@
 import { CharacterIdModel } from "../ models/CharacterIdModel";
 import { FilmIdModel } from "../ models/FilmIdModel";
-import { PageIntro } from "./PageIntro";
 import { observable, action, makeObservable } from "mobx";
 
 export type PageType = {
     readonly type: 'main'
-} | {
-    readonly type: 'intro';
-    readonly subpage: PageIntro
 } | {
     readonly type: 'film';
     readonly url: FilmIdModel;
@@ -28,17 +24,6 @@ export class Page {
         this.view = {
             type: 'main'
         };
-    }
-
-    @action redirectToIntro = (): PageIntro => {
-        const newIntro = new PageIntro();
-
-        this.view = {
-            type: 'intro',
-            subpage: newIntro
-        };
-
-        return newIntro;
     }
 
     @action redirectToFilm = (filmUrl: FilmIdModel) => {
