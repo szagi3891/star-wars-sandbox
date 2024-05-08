@@ -65,25 +65,45 @@ export class AutoMap<K extends PrimitiveType[] | PrimitiveType, V> {
 */
 
 export const autoMapValueDestructor = Symbol("autoMapValueDestructor");
+export const autoMapContextSubscribe = Symbol("autoMapContextSubscribe");
 
 interface BaseContext {
     [autoMapKeyAsString]: () => string,
+    [autoMapContextSubscribe]: (callback: () => void) => void,
 }
+
 interface BaseV {
     [autoMapValueDestructor]?: () => void,
 }
 
-class AutoMapContext<C extends BaseContext, K extends PrimitiveType[], V extends BaseV> {
-    private readonly data: AutoMap<[C, ...K], V>;
+export class AutoMapContext<C extends BaseContext, K extends PrimitiveType[], V extends BaseV> {
+    private readonly data: Map<string, V>;
 
-    public constructor(getValue: (id: [C, ...K]) => V) {
-        this.data = new AutoMap((id: [C, ...K]) => {
-            return getValue(id);
-        });
+    public constructor(private readonly getValue: (id: [C, ...K]) => V) {
+        this.data = new Map();
     }
 
-    public get(id: [C, ...K]): V {
-        return this.data.get(id);
+    public get(idIn: [C, ...K]): V {
+        const idString = JSON.stringify(reduceComplexSymbol(idIn));
+        const item = this.data.get(idString);
+
+        if (item !== undefined) {
+            return item;
+        }
+
+        const newItem = this.getValue(idIn);
+        const context = idIn[0];
+
+        context[autoMapContextSubscribe](() => {
+            this.data.delete(idString);
+
+            if (newItem[autoMapValueDestructor] !== undefined) {
+                newItem[autoMapValueDestructor]();
+            }
+        });
+
+        this.data.set(idString, newItem);
+        return newItem;
     }
 }
 
