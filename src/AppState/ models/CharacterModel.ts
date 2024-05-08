@@ -28,15 +28,13 @@ const getCharacter = async (url: string) => {
 };
 
 export class CharacterModel {
-
     protected nominal: 'nominal' = 'nominal';
-    public readonly type: 'CharacterModel' = 'CharacterModel';
 
-    static mapa: AutoMap<string, CharacterModel> = new AutoMap((url) => {
+    private static mapa: AutoMap<string, CharacterModel> = new AutoMap((url) => {
         return new CharacterModel(url);
     });
 
-    static get(url: string): CharacterModel {
+    public static get(url: string): CharacterModel {
         return CharacterModel.mapa.get(url);
     }
 

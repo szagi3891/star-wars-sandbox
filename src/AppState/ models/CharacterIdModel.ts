@@ -4,7 +4,6 @@ import { CharacterModel } from "./CharacterModel";
 
 export class CharacterIdModel {
     protected nominal: 'nominal' = 'nominal';
-    public readonly type: 'CharacterIdModel' = 'CharacterIdModel';
 
     static mapa: AutoMap<string, CharacterIdModel> = new AutoMap((url) => {
         return new CharacterIdModel(url);
@@ -25,3 +24,30 @@ export class CharacterIdModel {
         return CharacterModel.get(this.url);
     }
 }
+
+/*
+Przykład pokazujący zachowanie klasy traktowanej jako nominalnej
+
+const aaa = (char: CharacterIdModel) => {
+
+};
+
+
+class AAA {
+    protected nominal: 'nominal' = 'nominal';
+
+    get url(): string {
+        return '';
+    }
+
+    get reactKey(): string {
+        return '';
+    }
+
+    model(): CharacterModel {
+        throw Error('TODO');
+    }
+}
+
+aaa(new AAA());
+*/

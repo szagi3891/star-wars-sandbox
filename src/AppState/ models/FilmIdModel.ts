@@ -4,13 +4,12 @@ import { FilmModel } from "./FilmModel";
 
 export class FilmIdModel {
     protected nominal: 'nominal' = 'nominal';
-    public readonly type: 'FilmIdModel' = 'FilmIdModel';
 
-    static mapa: AutoMap<string, FilmIdModel> = new AutoMap((url) => {
+    private static mapa: AutoMap<string, FilmIdModel> = new AutoMap((url) => {
         return new FilmIdModel(url);
     });
 
-    static get(url: string): FilmIdModel {
+    public static get(url: string): FilmIdModel {
         return FilmIdModel.mapa.get(url);
     }
 

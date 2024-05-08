@@ -32,13 +32,12 @@ const getList = async (): Promise<Array<FilmListModelItemType>> => {
 
 export class FilmListModel {
     protected nominal: 'nominal' = 'nominal';
-    public readonly type: 'FilmListModel' = 'FilmListModel';
 
-    static mapa: AutoMapWeak<undefined, FilmListModel> = new AutoMapWeak(() => {
+    private static mapa: AutoMapWeak<undefined, FilmListModel> = new AutoMapWeak(() => {
         return new FilmListModel();
     });
 
-    static get(): FilmListModel {
+    public static get(): FilmListModel {
         return FilmListModel.mapa.get(undefined);
     }
 
