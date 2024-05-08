@@ -31,7 +31,7 @@ const getList = async (): Promise<Array<FilmListModelItemType>> => {
 }
 
 export class FilmListModel {
-    protected nominal: 'nominal' = 'nominal';
+    protected nominal?:never;
 
     private static mapa: AutoMapWeak<undefined, FilmListModel> = new AutoMapWeak(() => {
         return new FilmListModel();

@@ -28,7 +28,7 @@ const getCharacter = async (url: string) => {
 };
 
 export class CharacterModel {
-    protected nominal: 'nominal' = 'nominal';
+    protected nominal?:never;
 
     private static mapa: AutoMap<string, CharacterModel> = new AutoMap((url) => {
         return new CharacterModel(url);

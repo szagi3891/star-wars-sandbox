@@ -34,7 +34,7 @@ const getFilm = async (url: string) => {
 };
 
 export class FilmModel {
-    protected nominal: 'nominal' = 'nominal';
+    protected nominal?:never;
 
     private static mapa: AutoMap<string, FilmModel> = new AutoMap((url) => {
         return new FilmModel(url);

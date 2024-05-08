@@ -3,7 +3,7 @@ import { FilmModel } from "./FilmModel";
 
 
 export class FilmIdModel {
-    protected nominal: 'nominal' = 'nominal';
+    protected nominal?:never;
 
     private static mapa: AutoMap<string, FilmIdModel> = new AutoMap((url) => {
         return new FilmIdModel(url);
