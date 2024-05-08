@@ -1,7 +1,7 @@
 import { makeObservable } from 'mobx';
 import { z } from 'zod';
 import { Resource, Result } from '../../utils/Resource';
-import { AutoMap } from '../../utils/AutoMap';
+import { AutoMapContext } from '../../utils/AutoMap';
 import { CharacterIdModel } from './CharacterIdModel';
 import { Api } from '../Api';
 
@@ -37,7 +37,7 @@ const getFilm = async (api: Api, url: string) => {
 export class FilmModel {
     protected nominal?: never;
 
-    private static mapa: AutoMap<[Api, string], FilmModel> = new AutoMap(([api, url]) => {
+    private static mapa: AutoMapContext<Api, [string], FilmModel> = new AutoMapContext(([api, url]) => {
         return new FilmModel(api, url);
     });
 

@@ -72,34 +72,35 @@ interface BaseContext {
     [autoMapContextSubscribe]: (callback: () => void) => void,
 }
 
-interface BaseV {
-    [autoMapValueDestructor]?: () => void,
-}
+// interface BaseV {
+//     [autoMapValueDestructor]?: () => void,
+// }
 
-export class AutoMapContext<C extends BaseContext, K extends PrimitiveType[], V extends BaseV> {
+export class AutoMapContext<C extends BaseContext, K extends PrimitiveType[], V /*extends BaseV*/> {
     private readonly data: Map<string, V>;
 
     public constructor(private readonly getValue: (id: [C, ...K]) => V) {
         this.data = new Map();
     }
 
-    public get(idIn: [C, ...K]): V {
-        const idString = JSON.stringify(reduceComplexSymbol(idIn));
+    public get(id: [C, ...K]): V {
+        const idString = JSON.stringify(reduceComplexSymbol(id));
         const item = this.data.get(idString);
 
         if (item !== undefined) {
             return item;
         }
 
-        const newItem = this.getValue(idIn);
-        const context = idIn[0];
+        const newItem = this.getValue(id);
+        const context = id[0];
 
         context[autoMapContextSubscribe](() => {
             this.data.delete(idString);
 
-            if (newItem[autoMapValueDestructor] !== undefined) {
-                newItem[autoMapValueDestructor]();
-            }
+            //TODO - przywrócić kod
+            // if (newItem[autoMapValueDestructor] !== undefined) {
+            //     newItem[autoMapValueDestructor]();
+            // }
         });
 
         this.data.set(idString, newItem);

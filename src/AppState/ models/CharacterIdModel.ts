@@ -1,4 +1,4 @@
-import { AutoMap } from '../../utils/AutoMap';
+import { AutoMapContext } from '../../utils/AutoMap';
 import { Api } from '../Api';
 import { CharacterModel } from './CharacterModel';
 
@@ -9,7 +9,7 @@ https://dev.to/tylim88/typescript-nominal-type-the-right-way-k9j
 export class CharacterIdModel {
     protected nominal?: never;
 
-    static mapa: AutoMap<[Api, string], CharacterIdModel> = new AutoMap(([api, url]) => {
+    static mapa: AutoMapContext<Api, [string], CharacterIdModel> = new AutoMapContext(([api, url]) => {
         return new CharacterIdModel(api, url);
     });
 

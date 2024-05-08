@@ -1,11 +1,11 @@
-import { AutoMap } from '../../utils/AutoMap';
+import { AutoMapContext } from '../../utils/AutoMap';
 import { Api } from '../Api';
 import { FilmModel } from './FilmModel';
 
 export class FilmIdModel {
     protected nominal?: never;
 
-    private static mapa: AutoMap<[Api, string], FilmIdModel> = new AutoMap(([api, url]) => {
+    private static mapa: AutoMapContext<Api, [string], FilmIdModel> = new AutoMapContext(([api, url]) => {
         return new FilmIdModel(api, url);
     });
 
