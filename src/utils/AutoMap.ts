@@ -27,7 +27,7 @@ class AutoMapSerialized<K, V> {
 
 type PrimitiveBaseType = string | number | boolean | null | undefined;
 
-type PrimitiveType = string | number | boolean | null | undefined | { [autoMapKeyAsString]: () => string };
+type PrimitiveType = PrimitiveBaseType | { [autoMapKeyAsString]: () => string };
 
 const reduceSymbol = (value: PrimitiveType): PrimitiveBaseType => {
     if (value === null || value === undefined || typeof value === 'string' || typeof value === 'number'  || typeof value === 'boolean') {
@@ -63,3 +63,27 @@ export class AutoMap<K extends PrimitiveType[] | PrimitiveType, V> {
 /*
     dzięki tej cesze autoMapKeyAsString, nie trzeba eksportować na zewnątrz AutoMapSerialized
 */
+
+export const autoMapValueDestructor = Symbol("autoMapValueDestructor");
+
+interface BaseContext {
+    [autoMapKeyAsString]: () => string,
+}
+interface BaseV {
+    [autoMapValueDestructor]?: () => void,
+}
+
+class AutoMapContext<C extends BaseContext, K extends PrimitiveType[], V extends BaseV> {
+    private readonly data: AutoMap<[C, ...K], V>;
+
+    public constructor(getValue: (id: [C, ...K]) => V) {
+        this.data = new AutoMap((id: [C, ...K]) => {
+            return getValue(id);
+        });
+    }
+
+    public get(id: [C, ...K]): V {
+        return this.data.get(id);
+    }
+}
+

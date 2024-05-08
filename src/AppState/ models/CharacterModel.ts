@@ -28,7 +28,6 @@ const getCharacter = async (api: Api, url: string) => {
     };
 };
 
-const symbolAsString = Symbol('asString');
 
 export class CharacterModel {
     protected nominal?: never;
@@ -50,11 +49,18 @@ export class CharacterModel {
     public get details(): Result<CharacterModelType> {
         return this.data.get();
     }
-
-    [symbolAsString](): string {
-        return '';
-    }
 }
+
+// const symbolAsString = Symbol('asString');
+
+// const serial = (value: { [symbolAsString]: () => string} | {}): string => {
+
+//     if (symbolAsString in value) {
+//         return value[symbolAsString]();
+//     }
+
+//     return '';
+// }
 
 // interface Base {
 //     [symbolAsString]: () => string;
