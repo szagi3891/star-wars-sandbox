@@ -30,12 +30,10 @@ export class CharacterIdModel {
 
 // Przykład pokazujący zachowanie klasy traktowanej jako nominalnej
 
-// const aaa = (char: CharacterIdModel) => {
-
-// };
+// const aaa = (char: CharacterIdModel) => {};
 
 // class AAA {
-//     protected nominal?:never;
+//     protected nominal?: never;
 
 //     get url(): string {
 //         return '';
