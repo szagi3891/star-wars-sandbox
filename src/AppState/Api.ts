@@ -1,12 +1,14 @@
 import { autoMapContextSubscribe, autoMapKeyAsString } from '../utils/AutoMap';
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 
 export class Api {
     protected nominal?: never;
     private readonly id: string;
 
     public constructor() {
-        this.id = nanoid();
+        // this.id = nanoid();
+        //TODO - przywrócić generowanie idka
+        this.id = 'dasdas';
     }
 
     public [autoMapKeyAsString](): string {
@@ -16,7 +18,7 @@ export class Api {
     public [autoMapContextSubscribe](callback: () => void): void {
         
 
-        //rejestracja
+        //TODO - rejestracja
     }
 
     //TODO - akcja odpalająca czyszczenie, powinny zostać wywołane callacki, które pousuwają te obiekty z automapy
