@@ -9,25 +9,21 @@ import { FilmList } from './View/FilmList';
 import styled from '@emotion/styled';
 import { FilmListModel } from './AppState/ models/FilmListModel';
 
-
 const RenderMain = observer(() => {
-    const films = FilmListModel.get().list;
+    const appState = useAppStateContext();
+    const films = FilmListModel.get(appState.api).list;
 
     if (films.type === 'loading') {
-        return <Loading/>;
+        return <Loading />;
     }
 
     if (films.type === 'error') {
-        return (
-            <div>
-                Błąd ładowania listy filmów: {films.message}
-            </div>
-        )
+        return <div>Błąd ładowania listy filmów: {films.message}</div>;
     }
 
     return (
         <>
-            <FilmList films={films.value.map(item => item.id)} />
+            <FilmList films={films.value.map((item) => item.id)} />
         </>
     );
 });
@@ -40,9 +36,9 @@ export const AppInner = observer(() => {
         return (
             <>
                 <h1>Lista filmów:</h1>
-                { <RenderMain /> }
+                {<RenderMain />}
             </>
-        )
+        );
     }
 
     if (view.type === 'film') {
@@ -58,7 +54,7 @@ export const AppInner = observer(() => {
         return (
             <>
                 <h1>Character:</h1>
-                <Character character={view.character}/>
+                <Character character={view.character} />
             </>
         );
     }
@@ -77,5 +73,5 @@ export const App = observer(() => {
                 <AppInner />
             </div>
         </Wrapper>
-    )
+    );
 });

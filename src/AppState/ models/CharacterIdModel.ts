@@ -1,40 +1,38 @@
-import { AutoMap } from "../../utils/AutoMap";
-import { CharacterModel } from "./CharacterModel";
+import { AutoMap } from '../../utils/AutoMap';
+import { Api } from '../Api';
+import { CharacterModel } from './CharacterModel';
 
 /*
 https://dev.to/tylim88/typescript-nominal-type-the-right-way-k9j
 */
 
 export class CharacterIdModel {
-    protected nominal?:never;
+    protected nominal?: never;
 
-    static mapa: AutoMap<string, CharacterIdModel> = new AutoMap((url) => {
-        return new CharacterIdModel(url);
+    static mapa: AutoMap<[Api, string], CharacterIdModel> = new AutoMap(([api, url]) => {
+        return new CharacterIdModel(api, url);
     });
 
-    static get(url: string): CharacterIdModel {
-        return CharacterIdModel.mapa.get(url);
+    static get(api: Api, url: string): CharacterIdModel {
+        return CharacterIdModel.mapa.get([api, url]);
     }
 
-    private constructor(public readonly url: string) {
-    }
+    private constructor(private readonly api: Api, public readonly url: string) {}
 
     public get reactKey(): string {
         return `key-${this.url}`;
     }
 
     public model(): CharacterModel {
-        return CharacterModel.get(this.url);
+        return CharacterModel.get(this.api, this.url);
     }
 }
-
 
 // Przykład pokazujący zachowanie klasy traktowanej jako nominalnej
 
 // const aaa = (char: CharacterIdModel) => {
 
 // };
-
 
 // class AAA {
 //     protected nominal?:never;

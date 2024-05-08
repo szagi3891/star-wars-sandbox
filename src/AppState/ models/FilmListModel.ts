@@ -1,8 +1,9 @@
-import { makeObservable } from "mobx";
+import { makeObservable } from 'mobx';
 import { z } from 'zod';
-import { AutoMapWeak } from "../../utils/AutoMapWeak";
-import { FilmIdModel } from "./FilmIdModel";
-import { Resource, Result } from "../../utils/Resource";
+import { FilmIdModel } from './FilmIdModel';
+import { Resource, Result } from '../../utils/Resource';
+import { Api } from '../Api';
+import { AutoMap } from '../../utils/AutoMap';
 
 const FilmZod = z.object({
     title: z.string(),
@@ -10,40 +11,40 @@ const FilmZod = z.object({
 });
 
 const Response = z.object({
-    results: z.array(FilmZod)
+    results: z.array(FilmZod),
 });
 
 export interface FilmListModelItemType {
-    title: string,
-    id: FilmIdModel,
+    title: string;
+    id: FilmIdModel;
 }
 
-const getList = async (): Promise<Array<FilmListModelItemType>> => {
+const getList = async (api: Api): Promise<Array<FilmListModelItemType>> => {
     const response = await fetch('https://swapi.dev/api/films');
     const json = await response.json();
 
     const data = Response.parse(json);
 
-    return data.results.map(item => ({
+    return data.results.map((item) => ({
         ...item,
-        id: FilmIdModel.get(item.url),
+        id: FilmIdModel.get(api, item.url),
     }));
-}
+};
 
 export class FilmListModel {
-    protected nominal?:never;
+    protected nominal?: never;
 
-    private static mapa: AutoMapWeak<undefined, FilmListModel> = new AutoMapWeak(() => {
-        return new FilmListModel();
+    private static mapa: AutoMap<Api, FilmListModel> = new AutoMap((api) => {
+        return new FilmListModel(api);
     });
 
-    public static get(): FilmListModel {
-        return FilmListModel.mapa.get(undefined);
+    public static get(api: Api): FilmListModel {
+        return FilmListModel.mapa.get(api);
     }
 
-    private data: Resource<Array<FilmListModelItemType>> = new Resource(getList);
+    private data: Resource<Array<FilmListModelItemType>> = new Resource(() => getList(this.api));
 
-    private constructor() {
+    private constructor(private readonly api: Api) {
         makeObservable(this);
     }
 
@@ -51,4 +52,3 @@ export class FilmListModel {
         return this.data.get();
     }
 }
-

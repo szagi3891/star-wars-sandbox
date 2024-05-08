@@ -1,22 +1,21 @@
-import { AutoMap } from "../../utils/AutoMap";
-import { FilmModel } from "./FilmModel";
-
+import { AutoMap } from '../../utils/AutoMap';
+import { Api } from '../Api';
+import { FilmModel } from './FilmModel';
 
 export class FilmIdModel {
-    protected nominal?:never;
+    protected nominal?: never;
 
-    private static mapa: AutoMap<string, FilmIdModel> = new AutoMap((url) => {
-        return new FilmIdModel(url);
+    private static mapa: AutoMap<[Api, string], FilmIdModel> = new AutoMap(([api, url]) => {
+        return new FilmIdModel(api, url);
     });
 
-    public static get(url: string): FilmIdModel {
-        return FilmIdModel.mapa.get(url);
+    public static get(api: Api, url: string): FilmIdModel {
+        return FilmIdModel.mapa.get([api, url]);
     }
 
-    private constructor(public readonly url: string) {
-    }
+    private constructor(private readonly api: Api, public readonly url: string) {}
 
     public model(): FilmModel {
-        return FilmModel.get(this.url);
+        return FilmModel.get(this.api, this.url);
     }
 }
