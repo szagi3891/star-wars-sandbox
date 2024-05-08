@@ -5,9 +5,15 @@
   - brak centralnego miejsca na modele. Statyczny konstruktór / getter mozna wykonać z dowolnego miejsca w kodzie dzięki temu
     ze instancje są przechowywane w zmiennej statycznej
 
+  - statyczny konstruktor, moze sprawdzić czy string / number, przychodzący z zewnątrz, jest poprawnym id.
+    Mode.get(string) -> Model | null
+
+  - Statyczna analiza jest bardzo uszczelniona. Zalezności pomiędzy funkcjonalnościami przełączają się na typowanie nominalne.
+
 # minusy
   - brak kontroli nad cyklicznościami. Potencjalnie będzie moliwe stworzenie zaleności, ze moduł A zaciaga moduł B a modół B próbuje zaciągnąć moduł A,
     ale niekoiecznie to moze występować podczas tworzenia definicji z modułami.
+    Ten przypadek moze być w praktyce ultra rzadki, jak zrobienie nieskończonej pętli.
 
 
 ----
