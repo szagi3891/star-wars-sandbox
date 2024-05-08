@@ -5,10 +5,14 @@ export class Api {
     protected nominal?: never;
     private readonly id: string;
 
+    private callbacks: Array<() => void> | null;
+
     public constructor() {
         // this.id = nanoid();
         //TODO - przywrócić generowanie idka
         this.id = 'dasdas';
+
+        this.callbacks = [];
     }
 
     public [autoMapKeyAsString](): string {
@@ -16,15 +20,20 @@ export class Api {
     }
 
     public [autoMapContextSubscribe](callback: () => void): void {
-        
-
-        //TODO - rejestracja
+        if (this.callbacks === null) {
+            callback();
+            return;
+        }
+    
+        this.callbacks.push(callback);
     }
 
-    //TODO - akcja odpalająca czyszczenie, powinny zostać wywołane callacki, które pousuwają te obiekty z automapy
+    public shoutdown(): void {
+        const callbacks = this.callbacks;
+        this.callbacks = null;
 
-    //jeśli na serwerze, będą uruchomione jakieś timery, one mogą chcieć tworzyć nowe obiekty
-
-    //jeśli oznaczymy w tym obiekcie Api, ze jest juz wyłączony, to kolejna próba zarejestrowania nowego
-    //obiektu w tym kontekście od razu spowoduje wyrejestrowanie tego obiektu
+        for (const callback of callbacks ?? []) {
+            callback();
+        }
+    }
 }

@@ -7,11 +7,10 @@ import { Loading } from './View/Common';
 import { Character } from './View/Character';
 import { FilmList } from './View/FilmList';
 import styled from '@emotion/styled';
-import { FilmListModel } from './AppState/ models/FilmListModel';
 
 const RenderMain = observer(() => {
     const appState = useAppStateContext();
-    const films = FilmListModel.get(appState.api).list;
+    const films = appState.models.filmList.list;
 
     if (films.type === 'loading') {
         return <Loading />;

@@ -1,14 +1,17 @@
 import * as React from 'react';
 import { Page } from './Routing/Page';
 import { Api } from './Api';
+import { Models } from './Models';
 
 export class AppState {
     public readonly api: Api;
+    public readonly models: Models;
     public readonly currentView: Page;
 
     constructor(currentView: Page) {
         this.currentView = currentView;
         this.api = new Api();
+        this.models = new Models(this.api);
     }
 }
 
