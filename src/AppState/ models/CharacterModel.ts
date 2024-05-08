@@ -66,11 +66,11 @@ interface Base2 {
 }
 
 const serialize1 = <T extends Base>(value: T): string => {
-    return value[symbolAsString]()
+    return value[symbolAsString]();
 };
 
 const serialize2 = (value: Base): string => {
-    return value[symbolAsString]()
+    return value[symbolAsString]();
 };
 
 const serialize3 = (value: Base | Base2): string => {
