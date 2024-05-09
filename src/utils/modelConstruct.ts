@@ -20,3 +20,21 @@ export const modelConstruct = <C extends WeakKey, K extends PrimitiveType[], V>(
         return data.get(context).get(rest);
     };
 };
+
+//Takie coś mogłoby zadziałać, ale konstruktor musiałby być publiczny
+//createValue: new (...args: [C, ...K]) => V
+
+
+// type Constructor = new (...args: any[]) => Object;
+// const inst = <R>(create: new (...args: any[]) => R): R => {
+//     return new create(1);
+// };
+
+// class DDD {
+//     constructor(api: Api, name: string) {}
+// }
+
+// const aaa = modelConstruct(DDD)
+
+// const aaa = inst(DDD)
+
