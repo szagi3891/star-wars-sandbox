@@ -24,7 +24,7 @@ class AutoMapSerialized<K, V> {
 
 type PrimitiveBaseType = string | number | boolean | null | undefined;
 
-type PrimitiveType = PrimitiveBaseType | { [autoMapKeyAsString]: () => string };
+export type PrimitiveType = PrimitiveBaseType | { [autoMapKeyAsString]: () => string };
 
 const reduceSymbol = (value: PrimitiveType): PrimitiveBaseType => {
     if (

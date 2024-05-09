@@ -3,8 +3,7 @@ import { z } from 'zod';
 import { FilmIdModel } from './FilmIdModel';
 import { Resource, Result } from '../../utils/Resource';
 import { Api } from '../Api';
-import { AutoWeakMap } from '../../utils/AutoWeakMap';
-import { AutoMap } from '../../utils/AutoMap';
+import { modelConstruct } from '../../utils/modelConstruct';
 
 const FilmZod = z.object({
     title: z.string(),
@@ -34,14 +33,7 @@ const getList = async (api: Api): Promise<Array<FilmListModelItemType>> => {
 
 export class FilmListModel {
     protected nominal?: never;
-
-    private static mapa: AutoWeakMap<Api, AutoMap<undefined, FilmListModel>> = new AutoWeakMap(
-        (api) => new AutoMap(() => new FilmListModel(api))
-    );
-
-    public static get(api: Api): FilmListModel {
-        return FilmListModel.mapa.get(api).get(undefined);
-    }
+    public static get = modelConstruct((api: Api) => new FilmListModel(api));
 
     private data: Resource<Array<FilmListModelItemType>> = new Resource(() => getList(this.api));
 
