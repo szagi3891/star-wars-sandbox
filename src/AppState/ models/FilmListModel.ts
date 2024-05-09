@@ -33,10 +33,9 @@ const getList = async (api: Api): Promise<Array<FilmListModelItemType>> => {
 
 export class FilmListModel {
     protected nominal?: never;
-    public static get = modelConstruct((api: Api) => new FilmListModel(api));
-
     private data: Resource<Array<FilmListModelItemType>> = new Resource(() => getList(this.api));
 
+    public static get = modelConstruct((api: Api) => new FilmListModel(api));
     private constructor(private readonly api: Api) {
         makeObservable(this);
     }

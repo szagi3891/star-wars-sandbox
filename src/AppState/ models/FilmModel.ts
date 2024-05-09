@@ -36,11 +36,9 @@ const getFilm = async (api: Api, url: string) => {
 
 export class FilmModel {
     protected nominal?: never;
-    // public static get = modelConstruct<Api, [string], FilmModel>((api, url) => new FilmModel(api, url));
-    public static get = modelConstruct((api: Api, url: string) => new FilmModel(api, url));
-
     private data: Resource<FilmModelType> = new Resource(() => getFilm(this.api, this.url));
 
+    public static get = modelConstruct((api: Api, url: string) => new FilmModel(api, url));
     private constructor(private readonly api: Api, private readonly url: string) {
         makeObservable(this);
     }

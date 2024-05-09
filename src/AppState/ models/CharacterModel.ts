@@ -3,8 +3,7 @@ import { z } from 'zod';
 import { FilmIdModel } from './FilmIdModel';
 import { Resource, Result } from '../../utils/Resource';
 import { Api } from '../Api';
-import { AutoWeakMap } from '../../utils/AutoWeakMap';
-import { AutoMap } from '../../utils/AutoMap';
+import { modelConstruct } from '../../utils/modelConstruct';
 
 const CharacterZod = z.object({
     name: z.string(),
@@ -31,20 +30,9 @@ const getCharacter = async (api: Api, url: string) => {
 
 export class CharacterModel {
     protected nominal?: never;
-
-    private static mapa: AutoWeakMap<Api, AutoMap<string, CharacterModel>> = new AutoWeakMap(
-        (api) =>
-            new AutoMap((url) => {
-                return new CharacterModel(api, url);
-            })
-    );
-
-    public static get(api: Api, url: string): CharacterModel {
-        return CharacterModel.mapa.get(api).get(url);
-    }
-
     private data: Resource<CharacterModelType> = new Resource(() => getCharacter(this.api, this.url));
 
+    public static get = modelConstruct((api: Api, url: string) => new CharacterModel(api, url));
     private constructor(private readonly api: Api, private readonly url: string) {
         makeObservable(this);
     }
@@ -53,43 +41,3 @@ export class CharacterModel {
         return this.data.get();
     }
 }
-
-// const symbolAsString = Symbol('asString');
-
-// const serial = (value: { [symbolAsString]: () => string} | {}): string => {
-
-//     if (symbolAsString in value) {
-//         return value[symbolAsString]();
-//     }
-
-//     return '';
-// }
-
-// interface Base {
-//     [symbolAsString]: () => string;
-// }
-
-// const symbolAsString2 = Symbol('asString');
-
-// interface Base2 {
-//     [symbolAsString2]: () => string;
-// }
-
-// const serialize1 = <T extends Base>(value: T): string => {
-//     return value[symbolAsString]();
-// };
-
-// const serialize2 = (value: Base): string => {
-//     return value[symbolAsString]();
-// };
-
-// const serialize3 = (value: Base | Base2): string => {
-//     if (symbolAsString2 in value) {
-//         return value[symbolAsString2]();
-//     }
-
-//     return value[symbolAsString]();
-// };
-
-//[Symbol.asyncIterator]() {
-//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
