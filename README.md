@@ -15,7 +15,21 @@
     ale niekoiecznie to moze występować podczas tworzenia definicji z modułami.
     Ten przypadek moze być w praktyce ultra rzadki, jak zrobienie nieskończonej pętli.
 
+----
 
+>> https://medium.com/@Trott/using-worker-threads-in-node-js-80494136dbb6
+>> https://web.logicspark.io/how-to-boost-node-js-performance-with-worker-threads/
+https://medium.com/@gautamappu0/maximizing-node-js-performance-exploring-the-potential-of-worker-threads-79941c1aa258
+
+
+Potencjalne rozwiązanie.
+Request który ma wygenerować html-a
+odpalamy ten request w nowym wątku. Potencjalnie moze to zapewnic izolacje pamięci pomiędzy requestami. (Lepsze bezpieczeństwo ?)
+
+generowanie htmla mozemy przerzucić do wątku
+
+
+https://www.linkedin.com/pulse/ultimate-guide-nodejs-performance-feat-clustering-pm2-sutradhar/
 ----
 
 
