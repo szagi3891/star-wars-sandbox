@@ -1,7 +1,7 @@
 import { PromiseBox } from './PromiseBox';
 import { Value } from './Value';
 
-const TIMEOUT = 10000;
+const TIMEOUT = 30_000;
 
 interface ResultLoading {
     readonly type: 'loading';
