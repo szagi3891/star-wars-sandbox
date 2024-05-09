@@ -1,9 +1,10 @@
 import { makeObservable } from 'mobx';
 import { z } from 'zod';
 import { Resource, Result } from '../../utils/Resource';
-import { AutoMapContext } from '../../utils/AutoMap';
 import { CharacterIdModel } from './CharacterIdModel';
 import { Api } from '../Api';
+import { AutoWeakMap } from '../../utils/AutoWeakMap';
+import { AutoMap } from '../../utils/AutoMap';
 
 const ResponseZod = z.object({
     title: z.string(),
@@ -37,12 +38,15 @@ const getFilm = async (api: Api, url: string) => {
 export class FilmModel {
     protected nominal?: never;
 
-    private static mapa: AutoMapContext<Api, [string], FilmModel> = new AutoMapContext(([api, url]) => {
-        return new FilmModel(api, url);
-    });
+    private static mapa: AutoWeakMap<Api, AutoMap<string, FilmModel>> = new AutoWeakMap(
+        (api) =>
+            new AutoMap((url) => {
+                return new FilmModel(api, url);
+            })
+    );
 
     public static get(api: Api, url: string): FilmModel {
-        return FilmModel.mapa.get([api, url]);
+        return FilmModel.mapa.get(api).get(url);
     }
 
     private data: Resource<FilmModelType> = new Resource(() => getFilm(this.api, this.url));

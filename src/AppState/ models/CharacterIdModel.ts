@@ -1,4 +1,5 @@
-import { AutoMapContext } from '../../utils/AutoMap';
+import { AutoMap } from '../../utils/AutoMap';
+import { AutoWeakMap } from '../../utils/AutoWeakMap';
 import { Api } from '../Api';
 import { CharacterModel } from './CharacterModel';
 
@@ -9,12 +10,15 @@ https://dev.to/tylim88/typescript-nominal-type-the-right-way-k9j
 export class CharacterIdModel {
     protected nominal?: never;
 
-    static mapa: AutoMapContext<Api, [string], CharacterIdModel> = new AutoMapContext(([api, url]) => {
-        return new CharacterIdModel(api, url);
-    });
+    static mapa: AutoWeakMap<Api, AutoMap<string, CharacterIdModel>> = new AutoWeakMap(
+        (api) =>
+            new AutoMap((url) => {
+                return new CharacterIdModel(api, url);
+            })
+    );
 
     static get(api: Api, url: string): CharacterIdModel {
-        return CharacterIdModel.mapa.get([api, url]);
+        return CharacterIdModel.mapa.get(api).get(url);
     }
 
     private constructor(private readonly api: Api, public readonly url: string) {}

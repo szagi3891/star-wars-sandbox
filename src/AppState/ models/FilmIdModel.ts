@@ -1,16 +1,17 @@
-import { AutoMapContext } from '../../utils/AutoMap';
+import { AutoMap } from '../../utils/AutoMap';
 import { Api } from '../Api';
+import { AutoWeakMap } from '../../utils/AutoWeakMap';
 import { FilmModel } from './FilmModel';
 
 export class FilmIdModel {
     protected nominal?: never;
 
-    private static mapa: AutoMapContext<Api, [string], FilmIdModel> = new AutoMapContext(([api, url]) => {
-        return new FilmIdModel(api, url);
-    });
+    private static data: AutoWeakMap<Api, AutoMap<string, FilmIdModel>> = new AutoWeakMap(
+        (api) => new AutoMap((url) => new FilmIdModel(api, url))
+    );
 
     public static get(api: Api, url: string): FilmIdModel {
-        return FilmIdModel.mapa.get([api, url]);
+        return FilmIdModel.data.get(api).get(url);
     }
 
     private constructor(private readonly api: Api, public readonly url: string) {}
