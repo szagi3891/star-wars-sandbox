@@ -22,9 +22,9 @@ class AutoMapSerialized<K, V> {
     }
 }
 
-type PrimitiveBaseType = string | number | boolean | null | undefined;
+type PrimitiveBaseType = string | number | boolean | null | undefined | PrimitiveBaseType[];
 
-export type PrimitiveType = PrimitiveBaseType | { [autoMapKeyAsString]: () => string };
+export type PrimitiveType = PrimitiveBaseType | { [autoMapKeyAsString]: () => string } | PrimitiveType[];
 
 const reduceSymbol = (value: PrimitiveType): PrimitiveBaseType => {
     if (
@@ -35,6 +35,10 @@ const reduceSymbol = (value: PrimitiveType): PrimitiveBaseType => {
         typeof value === 'boolean'
     ) {
         return value;
+    }
+
+    if (Array.isArray(value)) {
+        return value.map(reduceSymbol);
     }
 
     return value[autoMapKeyAsString]();
