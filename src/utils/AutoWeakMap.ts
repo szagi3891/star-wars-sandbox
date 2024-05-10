@@ -18,4 +18,14 @@ export class AutoWeakMap<K extends { [autoWeakMapKey]: () => void }, V> {
         this.data.set(id, newValue);
         return newValue;
     }
+
+    static create = <K extends { [autoWeakMapKey]: () => void }, V>(
+        createValue: (key: K) => V
+    ): ((key: K) => V) => {
+        const data: AutoWeakMap<K, V> = new AutoWeakMap(createValue);
+    
+        return (key: K): V => {
+            return data.get(key);
+        };
+    };
 }
