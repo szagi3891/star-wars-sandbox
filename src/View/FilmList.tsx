@@ -9,6 +9,7 @@ class ListState {
     @observable counter: number = 0;
 
     public static get = AutoMap.create(() => new ListState());
+    public static get2 = AutoMap.create<[string], ListState>(() => new ListState());
     private constructor() {
         makeObservable(this);
     }

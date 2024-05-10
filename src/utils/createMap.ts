@@ -9,19 +9,25 @@ export const createAutoWeakMap = <C extends { [autoWeakMapKey]: () => void }, K 
     createValue: (...key: [C, ...K]) => V
 ): ((...key: [C, ...K]) => V) => {
 
-    const data: AutoWeakMap<C, (...key: K) => V> = new AutoWeakMap((context: C) => {
-        return AutoMap.create<K, V>((...key: K): V => {
-            return createValue(context, ...key);
-        });
-    });
+    type AutoMapFunc = (key: K) => V;
+    type AutoWeakMapFunc = (context: C) => AutoMapFunc;
+    
+    const weakMap: AutoWeakMapFunc = AutoWeakMap.create<C, AutoMapFunc>(
+        (context: C): AutoMapFunc => {            
+            const autoMap = AutoMap.create<K, V>(
+                (...key: K) => createValue(context, ...key)
+            );
+            return (key: K): V => autoMap(...key);
+        }
+    );
 
     return (...key: [C, ...K]): V => {
         const [context, ...rest] = key;
-        return data.get(context)(...rest);
+        return weakMap(context)(rest);
     };
 };
 
-//TODO - AutoWeakMap.create(funkcja) => zwraca funkcję
+//TODO - tą funnkcję przenieść do WeakMap ????
 
 
 //Takie coś mogłoby zadziałać, ale konstruktor musiałby być publiczny
