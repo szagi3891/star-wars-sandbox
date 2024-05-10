@@ -62,4 +62,16 @@ export class AutoMap<K extends PrimitiveType[] | PrimitiveType, V> {
     public get(id: K): V {
         return this.data.get(id);
     }
+
+    static create = <K extends PrimitiveType[], V>(
+        createValue: (...key: [...K]) => V
+    ): ((...key: [...K]) => V) => {
+        const data: AutoMap<K, V> = new AutoMap((key: K): V => {
+            return createValue(...key);
+        });
+    
+        return (...key: [...K]): V => {
+            return data.get(key);
+        };
+    };
 }

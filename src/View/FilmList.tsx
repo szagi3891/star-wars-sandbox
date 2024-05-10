@@ -2,13 +2,13 @@ import * as React from 'react';
 import { FilmLabel } from './FilmLabel';
 import { observer } from 'mobx-react-lite';
 import { FilmIdModel } from '../AppState/ models/FilmIdModel';
-import { createAutoMap } from '../utils/createMap';
 import { makeObservable, observable } from 'mobx';
+import { AutoMap } from '../utils/AutoMap';
 
 class ListState {
     @observable counter: number = 0;
 
-    public static get = createAutoMap(() => new ListState());
+    public static get = AutoMap.create(() => new ListState());
     private constructor() {
         makeObservable(this);
     }
