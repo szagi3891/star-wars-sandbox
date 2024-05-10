@@ -15,29 +15,27 @@ class ListState {
 
     inc = () => {
         this.counter += 1;
-    }
+    };
 }
 
 interface PropsType {
-    films: Array<FilmIdModel>
+    films: Array<FilmIdModel>;
 }
 
 export const FilmList = observer((props: PropsType) => {
     const { films } = props;
-    const list = films.map(
-        (id) => <FilmLabel key={id.url} id={id} />
-    );
+    const list = films.map((id) => (
+        <FilmLabel
+            key={id.url}
+            id={id}
+        />
+    ));
 
     return (
         <>
-            { list }
-            <div>
-                current counter = {ListState.get().counter}
-            </div>
-            <div onClick={() => ListState.get().inc()}>
-                Up
-            </div>
-
+            {list}
+            <div>current counter = {ListState.get().counter}</div>
+            <div onClick={() => ListState.get().inc()}>Up</div>
         </>
     );
 });

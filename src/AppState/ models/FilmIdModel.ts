@@ -9,7 +9,7 @@ export class FilmIdModel {
     private constructor(private readonly api: Api, public readonly url: string) {}
 
     public model(): FilmModel {
-        return FilmModel.get(this.api, this.url,);
+        return FilmModel.get(this.api, this.url);
     }
 }
 
@@ -22,11 +22,11 @@ export class Path {
 export class Path2 {
     protected nominal?: never;
     public static get = createAutoMap((url: Array<string>, age: number) => new Path2(url, age));
-    private constructor(public readonly path: Array<string>, age: number) {}
+    private constructor(public readonly path: Array<string>, _age: number) {}
 }
 
 export class Path3 {
     protected nominal?: never;
     public static get = createAutoMap((age: number) => new Path3(age));
-    private constructor(age: number) {}
+    private constructor(_age: number) {}
 }

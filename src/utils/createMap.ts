@@ -1,5 +1,5 @@
 import { AutoWeakMap } from './AutoWeakMap';
-import { AutoMap, PrimitiveType } from './AutoMap';
+import { AutoMap, PrimitiveBaseType, PrimitiveType } from './AutoMap';
 
 // const construct = <C extends WeakKey, K extends PrimitiveType[], V>(): ((...key: [C, ...K]) => V) => {
 //     throw Error('TODO');
@@ -21,7 +21,7 @@ export const createAutoWeakMap = <C extends WeakKey, K extends PrimitiveType[], 
     };
 };
 
-export const createAutoMap = <K extends PrimitiveType[], V>(
+export const createAutoMap = <K extends PrimitiveBaseType[], V>(
     createValue: (...key: [...K]) => V
 ): ((...key: [...K]) => V) => {
     const data: AutoMap<K, V> = new AutoMap((key: K): V => {
@@ -33,10 +33,8 @@ export const createAutoMap = <K extends PrimitiveType[], V>(
     };
 };
 
-
 //Takie coś mogłoby zadziałać, ale konstruktor musiałby być publiczny
 //createValue: new (...args: [C, ...K]) => V
-
 
 // type Constructor = new (...args: any[]) => Object;
 // const inst = <R>(create: new (...args: any[]) => R): R => {
@@ -50,4 +48,3 @@ export const createAutoMap = <K extends PrimitiveType[], V>(
 // const aaa = modelConstruct(DDD)
 
 // const aaa = inst(DDD)
-
