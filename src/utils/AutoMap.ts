@@ -22,7 +22,7 @@ class AutoMapSerialized<K, V> {
     }
 }
 
-export type PrimitiveBaseType = string | number | boolean | null | undefined | PrimitiveBaseType[];
+type PrimitiveBaseType = string | number | boolean | null | undefined | PrimitiveBaseType[];
 
 export type PrimitiveType = PrimitiveBaseType | { [autoMapKeyAsString]: () => string } | PrimitiveType[];
 

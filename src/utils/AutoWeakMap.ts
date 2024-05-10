@@ -1,4 +1,6 @@
-export class AutoWeakMap<K extends WeakKey, V> {
+export const autoWeakMapKey = Symbol('AutoWeakMapKey');
+
+export class AutoWeakMap<K extends { [autoWeakMapKey]: () => void }, V> {
     private data: WeakMap<K, V>;
 
     constructor(private readonly create: (key: K) => V) {

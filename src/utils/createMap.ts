@@ -1,11 +1,11 @@
-import { AutoWeakMap } from './AutoWeakMap';
-import { AutoMap, PrimitiveBaseType, PrimitiveType } from './AutoMap';
+import { AutoWeakMap, autoWeakMapKey } from './AutoWeakMap';
+import { AutoMap, PrimitiveType } from './AutoMap';
 
 // const construct = <C extends WeakKey, K extends PrimitiveType[], V>(): ((...key: [C, ...K]) => V) => {
 //     throw Error('TODO');
 // }
 
-export const createAutoWeakMap = <C extends WeakKey, K extends PrimitiveType[], V>(
+export const createAutoWeakMap = <C extends { [autoWeakMapKey]: () => void }, K extends PrimitiveType[], V>(
     createValue: (...key: [C, ...K]) => V
 ): ((...key: [C, ...K]) => V) => {
     const data: AutoWeakMap<C, AutoMap<K, V>> = new AutoWeakMap(
@@ -21,7 +21,7 @@ export const createAutoWeakMap = <C extends WeakKey, K extends PrimitiveType[], 
     };
 };
 
-export const createAutoMap = <K extends PrimitiveBaseType[], V>(
+export const createAutoMap = <K extends PrimitiveType[], V>(
     createValue: (...key: [...K]) => V
 ): ((...key: [...K]) => V) => {
     const data: AutoMap<K, V> = new AutoMap((key: K): V => {

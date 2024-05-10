@@ -1,17 +1,10 @@
-import { autoMapKeyAsString } from '../utils/AutoMap';
+import { autoWeakMapKey } from '../utils/AutoWeakMap';
 // import { nanoid } from 'nanoid';
 
 export class Api {
     protected nominal?: never;
-    private readonly id: string;
 
-    public constructor() {
-        // this.id = nanoid();
-        //TODO - przywrócić generowanie idka
-        this.id = 'dasdas';
-    }
+    [autoWeakMapKey] = (): void => {};
 
-    public [autoMapKeyAsString](): string {
-        return this.id;
-    }
+    public constructor() {}
 }
