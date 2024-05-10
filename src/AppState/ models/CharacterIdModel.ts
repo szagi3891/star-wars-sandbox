@@ -1,4 +1,4 @@
-import { createAutoWeakMap } from '../../utils/createMap';
+import { AutoWeakMap } from '../../utils/AutoWeakMap';
 import { Api } from '../Api';
 import { CharacterModel } from './CharacterModel';
 
@@ -8,7 +8,7 @@ https://dev.to/tylim88/typescript-nominal-type-the-right-way-k9j
 
 export class CharacterIdModel {
     protected nominal?: never;
-    public static get = createAutoWeakMap((api: Api, url: string) => new CharacterIdModel(api, url));
+    public static get = AutoWeakMap.create((api: Api, url: string) => new CharacterIdModel(api, url));
     private constructor(private readonly api: Api, public readonly url: string) {}
 
     public get reactKey(): string {

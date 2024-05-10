@@ -1,12 +1,12 @@
 import { Api } from '../Api';
 import { FilmModel } from './FilmModel';
-import { createAutoWeakMap } from '../../utils/createMap';
 import { AutoMap } from '../../utils/AutoMap';
+import { AutoWeakMap } from '../../utils/AutoWeakMap';
 
 export class FilmIdModel {
     protected nominal?: never;
 
-    public static get = createAutoWeakMap((api: Api, url: string) => new FilmIdModel(api, url));
+    public static get = AutoWeakMap.create((api: Api, url: string) => new FilmIdModel(api, url));
     private constructor(private readonly api: Api, public readonly url: string) {}
 
     public model(): FilmModel {

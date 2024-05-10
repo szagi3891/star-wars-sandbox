@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { FilmIdModel } from './FilmIdModel';
 import { Resource, Result } from '../../utils/Resource';
 import { Api } from '../Api';
-import { createAutoWeakMap } from '../../utils/createMap';
+import { AutoWeakMap } from '../../utils/AutoWeakMap';
 
 const FilmZod = z.object({
     title: z.string(),
@@ -35,7 +35,7 @@ export class FilmListModel {
     protected nominal?: never;
     private data: Resource<Array<FilmListModelItemType>> = new Resource(() => getList(this.api));
 
-    public static get = createAutoWeakMap((api: Api) => new FilmListModel(api));
+    public static get = AutoWeakMap.create((api: Api) => new FilmListModel(api));
     private constructor(private readonly api: Api) {
         makeObservable(this);
     }
