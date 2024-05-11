@@ -6,6 +6,7 @@ import { makeObservable, observable } from 'mobx';
 import { AutoMap } from '../utils/AutoMap';
 import { GithubUser } from '../AppState/ models/GithubUser';
 import { useAppStateContext } from '../AppState/AppState';
+import { GithubUserRepos } from '../AppState/ models/GithubUserRepos';
 
 class ListState {
     @observable counter: number = 0;
@@ -26,25 +27,41 @@ const Github = observer(() => {
     const model = GithubUser.get(appState.api, 'microsoft').data.get();
 
     if (model.type === 'loading') {
-        return (
-            <div>
-                Loading
-            </div>
-        );
+        return <div>Loading</div>;
     }
 
     if (model.type === 'error') {
-        return (
-            <div>
-                Error: ${model.message}
-            </div>
-        );
+        return <div>Error: ${model.message}</div>;
     }
 
+    return <pre>{JSON.stringify(model.value)}</pre>;
+});
+
+const GithubRepo = observer(() => {
+    const appState = useAppStateContext();
+    const model = GithubUserRepos.get(appState.api, 'microsoft').data.get();
+
+    if (model.type === 'loading') {
+        return <div>Loading</div>;
+    }
+
+    if (model.type === 'error') {
+        return <div>Error: ${model.message}</div>;
+    }
+
+    const listJsx = model.value.map((record) => (
+        <div>
+            <hr />
+            <div>{record.id}</div>
+            <div>{record.name}</div>
+        </div>
+    ));
+
     return (
-        <pre>
-            {JSON.stringify(model.value)}
-        </pre>
+        <div>
+            <div>Repozutoriów: {model.value.length}</div>
+            <div>{listJsx}</div>
+        </div>
     );
 });
 
@@ -67,6 +84,7 @@ export const FilmList = observer((props: PropsType) => {
             <div>current counter = {ListState.get().counter}</div>
             <div onClick={() => ListState.get().inc()}>Up</div>
             <Github />
+            <GithubRepo />
         </>
     );
 });
