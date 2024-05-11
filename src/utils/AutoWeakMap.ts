@@ -21,25 +21,13 @@ export class AutoWeakMap<K extends { [autoWeakMapKey]: () => void }, V> {
         return newValue;
     }
 
-    private static createSimple = <K extends { [autoWeakMapKey]: () => void }, V>(
-        createValue: (key: K) => V
-    ): ((key: K) => V) => {
-        const data: AutoWeakMap<K, V> = new AutoWeakMap(createValue);
-    
-        return (key: K): V => {
-            return data.get(key);
-        };
-    };
-
-
     public static create = <C extends { [autoWeakMapKey]: () => void }, K extends PrimitiveType[], V>(
         createValue: (...key: [C, ...K]) => V
     ): ((...key: [C, ...K]) => V) => {
 
         type AutoMapFunc = (key: K) => V;
-        type AutoWeakMapFunc = (context: C) => AutoMapFunc;
-        
-        const weakMap: AutoWeakMapFunc = AutoWeakMap.createSimple<C, AutoMapFunc>(
+
+        const weakMap: AutoWeakMap<C, AutoMapFunc> = new AutoWeakMap(
             (context: C): AutoMapFunc => {            
                 const autoMap = AutoMap.create<K, V>(
                     (...key: K) => createValue(context, ...key)
@@ -50,7 +38,7 @@ export class AutoWeakMap<K extends { [autoWeakMapKey]: () => void }, V> {
 
         return (...key: [C, ...K]): V => {
             const [context, ...rest] = key;
-            return weakMap(context)(rest);
+            return weakMap.get(context)(rest);
         };
     };
 
