@@ -1,5 +1,4 @@
-import { AutoWeakMap } from '../../utils/AutoWeakMap';
-import { Resource } from '../../utils/Resource';
+import { AutoWeakMap, Resource } from '@reactive/utils';
 import { Api } from '../Api';
 import { z } from 'zod';
 

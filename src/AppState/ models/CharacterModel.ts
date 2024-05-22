@@ -1,9 +1,8 @@
 import { makeObservable } from 'mobx';
 import { z } from 'zod';
 import { FilmIdModel } from './FilmIdModel';
-import { Resource, Result } from '../../utils/Resource';
+import { Resource, ResourceResult, AutoWeakMap } from '@reactive/utils';
 import { Api } from '../Api';
-import { AutoWeakMap } from '../../utils/AutoWeakMap';
 
 const CharacterZod = z.object({
     name: z.string(),
@@ -37,7 +36,7 @@ export class CharacterModel {
         makeObservable(this);
     }
 
-    public get details(): Result<CharacterModelType> {
+    public get details(): ResourceResult<CharacterModelType> {
         return this.data.get();
     }
 }

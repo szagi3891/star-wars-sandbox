@@ -3,7 +3,7 @@ import { FilmLabel } from './FilmLabel';
 import { observer } from 'mobx-react-lite';
 import { FilmIdModel } from '../AppState/ models/FilmIdModel';
 import { makeObservable, observable } from 'mobx';
-import { AutoMap } from '../utils/AutoMap';
+import { AutoMap } from '@reactive/utils';
 import { GithubUser } from '../AppState/ models/GithubUser';
 import { useAppStateContext } from '../AppState/AppState';
 import { GithubUserRepos } from '../AppState/ models/GithubUserRepos';

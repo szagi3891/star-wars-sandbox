@@ -1,4 +1,4 @@
-import { AutoWeakMap } from '../../utils/AutoWeakMap';
+import { AutoWeakMap } from '@reactive/utils';
 import { Api } from '../Api';
 import { CharacterModel } from './CharacterModel';
 

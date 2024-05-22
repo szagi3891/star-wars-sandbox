@@ -1,7 +1,6 @@
 import { Api } from '../Api';
 import { FilmModel } from './FilmModel';
-import { AutoMap } from '../../utils/AutoMap';
-import { AutoWeakMap } from '../../utils/AutoWeakMap';
+import { AutoMap, AutoWeakMap } from '@reactive/utils';
 
 export class FilmIdModel {
     protected nominal?: never;
